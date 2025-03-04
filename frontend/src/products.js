@@ -42,7 +42,7 @@ const products = [
     _id: "4",
     name: "Gaming Keyboard",
     description:
-      "Mechanical gaming keyboard with RGB lighting and programmable keys.",
+      "Gaming keyboard with RGB lighting and programmable keys.",
     image: "/images/keyboard.jpg",
     brand: "Razer",
     category: "Electronics",

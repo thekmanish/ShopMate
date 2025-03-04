@@ -1,13 +1,13 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Footer from "./components/footer/Footer.jsx";
-import Home from "./pages/Home.jsx";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <Home />
+      <Outlet />
       <Footer />
     </div>
   );
