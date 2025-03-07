@@ -9,7 +9,7 @@ const products = [
     category: "Electronics",
     price: 29.99,
     countInStock: 100,
-    rating: 2.5,
+    rating: 4.5,
     numReviews: 1500,
   },
   {

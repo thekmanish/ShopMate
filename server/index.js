@@ -11,6 +11,7 @@ import cors from "cors";
 import CustomError from "./middleware/CustomError.js";
 const app = express();
 app.use(cookieParser());
+
 const corsOptions = {
   origin: process.env.CLIENT,
   credentials: true,
@@ -26,10 +27,14 @@ app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/admin", adminRoute);
+
+//Error for any other route
 app.use("*", (req, res, next) => {
   return next(new CustomError("This route does not exist", 404));
 });
 app.use(errorMiddleware);
+
+//Server
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is listening on port ${process.env.PORT || 3000}`);
 });
