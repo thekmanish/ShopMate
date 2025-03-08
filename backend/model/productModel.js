@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-const reveiwSchema = new mongoose.Schema({
+
+// Review Schema
+const reviewSchema = new mongoose.Schema({
   users: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -7,8 +9,7 @@ const reveiwSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    required: true,
-    default: true,
+    default: 0,
   },
   comment: {
     type: String,
@@ -19,6 +20,8 @@ const reveiwSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// Product Schema
 const productSchema = new mongoose.Schema(
   {
     name: {
@@ -44,13 +47,11 @@ const productSchema = new mongoose.Schema(
     },
     ratings: {
       type: Number,
-      required: true,
       default: 0,
     },
-    reviews: [reveiwSchema],
+    reviews: [reviewSchema],
     reviewCounts: {
       type: Number,
-      required: true,
       default: 0,
     },
     price: {
@@ -59,7 +60,6 @@ const productSchema = new mongoose.Schema(
     },
     inStock: {
       type: Number,
-      required: true,
       default: 0,
     },
   },

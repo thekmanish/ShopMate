@@ -70,6 +70,7 @@ const logout = asyncHandler((req, res, next) => {
   });
 });
 
+//Update Profile
 const updateProfile = asyncHandler(async (req, res, next) => {
   if (!req.body.name && !req.body.email && !req.body.phone) {
     return next(new CustomError("Modify at least a new field"));
@@ -83,6 +84,8 @@ const updateProfile = asyncHandler(async (req, res, next) => {
     success: true,
   });
 });
+
+//Delete Account
 const deleteAccount = asyncHandler(async (req, res, next) => {
   if (!req.body.password) {
     return next(

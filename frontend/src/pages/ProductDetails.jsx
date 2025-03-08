@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import products from "../products.js";
-import Rating from "../components/product/Rating"; // Ensure the correct path
+import Rating from "../components/product/Rating";
+import axios from "axios";
 
 const ProductDetails = () => {
+  const [product, setProduct] = useState([]);
   const { individualProductId } = useParams();
-  const product = products.find((item) => item._id === individualProductId);
+  console.log(individualProductId);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(
+        `http://localhost:3000/api/products/${individualProductId}`
+      );
+      console.log(data);
+
+      setProduct(data);
+      console.log(product);
+    };
+    fetchProduct();
+  }, [individualProductId]);
 
   if (!product) {
     return (
@@ -30,30 +44,45 @@ const ProductDetails = () => {
         <div className="flex flex-col justify-center">
           <h1 className="text-4xl font-bold text-gray-900">{product.name}</h1>
           <p className="text-gray-600 mt-3">{product.description}</p>
-          
+
           {/* Rating and Reviews */}
           <div className="flex items-center mt-3">
-            <Rating rating={product.rating} />
-            <span className="ml-2 text-gray-600">({product.numReviews} reviews)</span>
+            <Rating rating={product.ratings} />
+            <span className="ml-2 text-gray-600">
+              ({product.reviewCounts} reviews)
+            </span>
           </div>
 
           {/* Price and Stock */}
-          <p className="text-3xl font-semibold text-blue-600 mt-4">${product.price}</p>
-          <p className={`mt-2 font-medium ${product.countInStock > 0 ? "text-green-600" : "text-red-600"}`}>
-            {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+          <p className="text-3xl font-semibold text-blue-600 mt-4">
+            ${product.price}
+          </p>
+          <p
+            className={`mt-2 font-medium ${
+              product.inStock > 0 ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {product.inStock > 0 ? "In Stock" : "Out of Stock"}
           </p>
 
           {/* Extra Info */}
           <div className="mt-4">
-            <p><span className="font-semibold">Brand:</span> {product.brand}</p>
-            <p><span className="font-semibold">Category:</span> {product.category}</p>
+            <p>
+              <span className="font-semibold">Brand:</span> {product.brand}
+            </p>
+            <p>
+              <span className="font-semibold">Category:</span>{" "}
+              {product.category}
+            </p>
           </div>
 
           {/* Buttons */}
           <div className="mt-6 flex space-x-4">
             <button
               className={`px-6 py-2 rounded text-white font-semibold transition ${
-                product.countInStock > 0 ? "bg-green-500 hover:bg-green-600" : "bg-gray-400 cursor-not-allowed"
+                product.countInStock > 0
+                  ? "bg-green-500 hover:bg-green-600"
+                  : "bg-gray-400 cursor-not-allowed"
               }`}
               disabled={product.countInStock === 0}
             >
