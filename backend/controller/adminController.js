@@ -35,6 +35,8 @@ const modifyOrder = asyncHandler(async (req, res, next) => {
     );
   }
 });
+
+//ASYNC HANDLER
 const deleteOrder = asyncHandler(async (req, res, next) => {
   if (!req.body._id) {
     return next(new customError("Request does not contain order id"));
@@ -91,6 +93,7 @@ const createProduct = asyncHandler(async (req, res, next) => {
   }
 });
 
+//DELETE PRODUCT
 const deleteProduct = asyncHandler(async (req, res, next) => {
   const { _id } = req.body;
   if (!_id) {
@@ -105,6 +108,7 @@ const deleteProduct = asyncHandler(async (req, res, next) => {
   }
 });
 
+//MODIFY PRODUCT
 const modifyProduct = asyncHandler(async (req, res, next) => {
   const { image, price, description, category, name, inStock, brand } =
     req.body;
