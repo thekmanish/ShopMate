@@ -28,7 +28,7 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
+    <div className="max-w-6xl mx-auto p-6 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6">
       {/* Product Details Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
