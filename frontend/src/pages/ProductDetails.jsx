@@ -1,31 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Rating from "../components/product/Rating";
-import axios from "axios";
+import Loader from "../components/Loader";
+import useProductStore from "../store/useProductStore";
+import Message from "../components/Message";
 
 const ProductDetails = () => {
-  const [product, setProduct] = useState([]);
+
+  const { product, error, loading, fetchProductById } = useProductStore();
   const { individualProductId } = useParams();
-  console.log(individualProductId);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(
-        `http://localhost:3000/api/products/${individualProductId}`
-      );
-      console.log(data);
+      fetchProductById(individualProductId);
+    }, [individualProductId]);
 
-      setProduct(data);
-      console.log(product);
-    };
-    fetchProduct();
-  }, [individualProductId]);
-
-  if (!product) {
-    return (
-      <div className="text-center text-red-500 text-xl">Product not found.</div>
-    );
-  }
+    if (loading) return <Loader />;
+    if (error) return <Message type="error" message={error} />;
+    if (!product) return <p className="text-center text-gray-500">Product not found.</p>;
+  
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6">

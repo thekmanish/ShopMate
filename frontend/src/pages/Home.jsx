@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import ProductComponent from "../components/product/ProductComponent";
 import useProductStore from "../store/useProductStore";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const Home = () => {
   const { products, fetchProducts, loading, error } = useProductStore();
@@ -14,12 +16,10 @@ const Home = () => {
       <h1 className="text-2xl font-bold mb-6">Latest Products</h1>
 
       {/* Show Loading State */}
-      {loading && (
-        <p className="text-center text-gray-500">Loading products...</p>
-      )}
+      {loading && <Loader />}
 
       {/* Show Error Message */}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {error && <Message type="error" message={error} />}
 
       {/* Show Products Only If No Loading or Error */}
       {!loading && !error && (
