@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Message = ({ type, message }) => {
-  if (!message) return null;
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (message) {
+      setVisible(true);
+      const timer = setTimeout(() => setVisible(false), 3500); // Auto-hide after 3s
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
+  if (!visible) return null;
 
   return (
     <div
-      className={`fixed top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg text-white text-center max-w-md
-        ${type === "success" ? "bg-green-500" : "bg-red-500"}
+      className={`fixed top-20 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-2xl backdrop-blur-md text-white text-center max-w-md 
+        transition-all duration-500 ease-in-out opacity-100 scale-100
+        ${type === "success" ? "bg-green-500/80" : "bg-red-500/80"}
       `}
     >
-      {message}
+      <span className="font-semibold">{type === "success" ? "✅ Success:" : "❌ Error:"}</span> {message}
     </div>
   );
 };

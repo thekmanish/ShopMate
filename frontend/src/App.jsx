@@ -1,14 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.jsx";
 import Footer from "./components/footer/Footer.jsx";
-import { use } from "react";
 
 function App() {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar */}
       <Navbar />
-      <Outlet />
+
+      {/* Main Content - Ensures Space for Footer */}
+      <main className="flex-grow pb-16"> {/* 👈 Ensures content is not hidden by the footer */}
+        <Outlet />
+      </main>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

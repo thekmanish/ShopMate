@@ -1,27 +1,36 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Rating from "../components/product/Rating";
 import Loader from "../components/Loader";
-import useProductStore from "../store/useProductStore";
 import Message from "../components/Message";
+import useProductStore from "../store/useProductStore";
+import useCartStore from "../store/useCartStore";
 
 const ProductDetails = () => {
-
   const { product, error, loading, fetchProductById } = useProductStore();
   const { individualProductId } = useParams();
+  const { addToCart } = useCartStore();
+  const navigate = useNavigate();
+
+  // State for quantity selection
+  const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = () => {
+    addToCart({ ...product, quantity }); // Pass selected quantity
+    navigate("/cart");
+  };
 
   useEffect(() => {
-      fetchProductById(individualProductId);
-    }, [individualProductId]);
+    fetchProductById(individualProductId);
+  }, [individualProductId]);
 
-    if (loading) return <Loader />;
-    if (error) return <Message type="error" message={error} />;
-    if (!product) return <p className="text-center text-gray-500">Product not found.</p>;
-  
+  if (loading) return <Loader />;
+  if (error) return <Message type="error" message={error} />;
+  if (!product)
+    return <p className="text-center text-gray-500">Product not found.</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6">
-      {/* Product Details Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div className="flex justify-center">
@@ -46,8 +55,8 @@ const ProductDetails = () => {
           </div>
 
           {/* Price and Stock */}
-          <p className="text-3xl font-semibold text-blue-600 mt-4">
-            ${product.price}
+          <p className="text-3xl font-semibold text-gray-700 mt-4">
+            ₹{product.price}
           </p>
           <p
             className={`mt-2 font-medium ${
@@ -68,23 +77,45 @@ const ProductDetails = () => {
             </p>
           </div>
 
+          {/* Quantity Selector */}
+          {product.inStock > 0 && (
+            <div className="mt-4">
+              <label htmlFor="quantity" className="font-semibold mr-2">
+                Quantity:
+              </label>
+              <select
+                id="quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="border border-gray-300 rounded px-3 py-1"
+              >
+                {[...Array(product.inStock).keys()].map((x) => (
+                  <option key={x + 1} value={x + 1}>
+                    {x + 1}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {/* Buttons */}
           <div className="mt-6 flex space-x-4">
             <button
+              onClick={handleAddToCart}
               className={`px-6 py-2 rounded text-white font-semibold transition ${
-                product.countInStock > 0
+                product.inStock > 0
                   ? "bg-green-500 hover:bg-green-600"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
-              disabled={product.countInStock === 0}
+              disabled={product.inStock === 0}
             >
               Add to Cart
             </button>
             <button
-              className={`px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition ${
-                product.countInStock > 0 ? "" : "cursor-not-allowed opacity-50"
+              className={`px-6 py-2 bg-gray-700 text-white rounded hover:bg-blue-600 transition ${
+                product.inStock > 0 ? "" : "cursor-not-allowed opacity-50"
               }`}
-              disabled={product.countInStock === 0}
+              disabled={product.inStock === 0}
             >
               Buy Now
             </button>

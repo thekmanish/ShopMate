@@ -2,12 +2,17 @@ import React from "react";
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useCartStore from "../../store/useCartStore";
+import { calculateCartTotal } from "../../utils/cartUtils";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const {cart} = useCartStore(); 
+  const {totalItems} = calculateCartTotal(cart);
+
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-purple-600 shadow-md p-4 text-white">
+    <nav className="bg-gray-700 shadow-md p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">
           ShopMate
@@ -29,7 +34,7 @@ export default function Navbar() {
           <Link to="/cart" className="relative">
             <span className="text-xl">🛒</span>
             <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              2
+              {totalItems}
             </span>
           </Link>
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-xl">
@@ -38,7 +43,7 @@ export default function Navbar() {
         </div>
       </div>
       {isOpen && (
-        <div className="md:hidden bg-gradient-to-r from-blue-600 to-purple-600 shadow-md p-4 space-y-2">
+        <div className="md:hidden bg-gray-700 shadow-md p-4 space-y-2">
           <Link to="/shop" className="block hover:text-yellow-300">Shop</Link>
           <Link to="/deals" className="block hover:text-yellow-300">Deals</Link>
           <Link to="/about" className="block hover:text-yellow-300">About</Link>
