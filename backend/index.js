@@ -10,6 +10,8 @@ import adminRoute from "./route/adminRoute.js";
 import cors from "cors";
 import CustomError from "./middleware/CustomError.js";
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
@@ -19,8 +21,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 connectDB();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use("/api/products", productRoute);

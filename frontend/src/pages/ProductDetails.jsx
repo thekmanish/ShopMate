@@ -112,7 +112,7 @@ const ProductDetails = () => {
               Add to Cart
             </button>
             <button
-              className={`px-6 py-2 bg-gray-700 text-white rounded hover:bg-blue-600 transition ${
+              className={`px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-900 transition ${
                 product.inStock > 0 ? "" : "cursor-not-allowed opacity-50"
               }`}
               disabled={product.inStock === 0}

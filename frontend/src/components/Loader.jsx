@@ -8,7 +8,7 @@ const Loader = () => {
         {[...Array(3)].map((_, index) => (
           <motion.div
             key={index}
-            className="w-6 h-6 bg-blue-500 rounded-full"
+            className="w-6 h-6 bg-gray-700 rounded-full"
             initial={{ y: 0 }}
             animate={{ y: [0, -20, 0] }}
             transition={{

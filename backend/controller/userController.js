@@ -3,6 +3,8 @@ import CustomError from "../middleware/CustomError.js";
 import users from "../model/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
+//Login User
 const authUser = asyncHandler(async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -23,6 +25,7 @@ const authUser = asyncHandler(async (req, res, next) => {
   if (!isValidPassword) {
     return next(new CustomError("Invalid password", 400));
   }
+  
   const jwtToken = await jwt.sign(
     { _id: correctUserData._id },
     process.env.JWT_SECRET_KEY,
@@ -32,14 +35,12 @@ const authUser = asyncHandler(async (req, res, next) => {
   );
 
   res.status(200).json({
-    id: correctUserData.id,
-    name: correctUserData.name,
-    email: correctUserData.email,
-    isAdmin: correctUserData.isAdmin,
-    phone: correctUserData.phone,
+    user: correctUserData,
     token: jwtToken,
   });
 });
+
+//Register User
 const register = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -58,6 +59,8 @@ const register = asyncHandler(async (req, res, next) => {
     success: true,
   });
 });
+
+//Logout User
 const logout = asyncHandler((req, res, next) => {
   res.cookie("token", "", {
     httpOnly: true,
@@ -104,6 +107,8 @@ const deleteAccount = asyncHandler(async (req, res, next) => {
     success: true,
   });
 });
+
+//Check Auth
 const checkAuth = asyncHandler(async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
@@ -122,4 +127,6 @@ const checkAuth = asyncHandler(async (req, res, next) => {
     userDetails,
   });
 });
+
+//Exporting all the functions
 export { authUser, logout, register, updateProfile, deleteAccount, checkAuth };
