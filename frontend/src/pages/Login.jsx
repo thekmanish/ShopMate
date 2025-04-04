@@ -8,6 +8,11 @@ export default function Login() {
   const { user, login, loading, error } = useAuthStore();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    
+    if (user) navigate("/");
+  }, [user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(email, password);   
@@ -18,11 +23,6 @@ export default function Login() {
     }
   };
   
-  useEffect(() => {
-    if (user) navigate("/");
-  }, [user, navigate]);
-  
-
   return (
 
     <div className="min-h-screen flex items-center justify-center bg-gray-900">

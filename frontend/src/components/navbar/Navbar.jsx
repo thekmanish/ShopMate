@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import useCartStore from "../../store/useCartStore";
 import { calculateCartTotal } from "../../utils/cartUtils";
 import { FaRegUser } from "react-icons/fa";
+import useAuthStore from "../../store/useAuthStore";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropDown, setDropDown] =  useState(false);
   const { cart } = useCartStore();
   const { totalItems } = calculateCartTotal(cart);
+  const { user, logout } = useAuthStore();
 
   return (
     <nav className="bg-gray-700 shadow-md p-4 text-white">
@@ -45,10 +48,43 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Login Icon */}
-          <Link to="/login">
-            <span className="text-xl"><FaRegUser/></span>
-          </Link>
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setDropDown(!dropDown)}
+                className="flex items-center space-x-2 bg-gray-800 px-3 py-2 rounded-full hover:bg-gray-600 transition"
+              >
+                <FaRegUser className="text-xl"/>
+                <span>{user.name || "User"}</span>
+              </button>
+
+              {dropDown && user && (
+                <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-lg shadow-lg overflow-x-hidden">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={()=>{
+                      logout();
+                      setDropDown(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login">
+              <span className="text-xl">
+                <FaRegUser/>
+              </span>
+            </Link>
+          )}
 
           {/* Hamburger Menu Button (Mobile) */}
           <button

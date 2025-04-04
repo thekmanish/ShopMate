@@ -6,12 +6,13 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import "./index.css";
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
 import Login from "./pages/Login.jsx";
-import "./index.css";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,10 +21,17 @@ const router = createBrowserRouter(
       <Route path="cart" element={<Cart />} />
       <Route path="login" element={<Login />} />
       <Route path="product/:individualProductId" element={<ProductDetails />} />
+      <Route
+        path="*"
+        element={<h1 className=" ">this route does not exist</h1>}
+      />
     </Route>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <>
+    <Toaster position="top-right" reverseOrder={false} />
+    <RouterProvider router={router} />
+  </>
 );

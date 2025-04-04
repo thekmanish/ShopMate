@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // Change this to your backend URL
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Automatically add token to requests if available
+// Automatically adding token to requests if available
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -16,7 +16,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-
+  
   (error) => Promise.reject(error)
 );
 

@@ -25,7 +25,7 @@ const authUser = asyncHandler(async (req, res, next) => {
   if (!isValidPassword) {
     return next(new CustomError("Invalid password", 400));
   }
-  
+
   const jwtToken = await jwt.sign(
     { _id: correctUserData._id },
     process.env.JWT_SECRET_KEY,
@@ -110,22 +110,14 @@ const deleteAccount = asyncHandler(async (req, res, next) => {
 
 //Check Auth
 const checkAuth = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return next(new CustomError("No token found", 404));
+  try {
+    res.status(200).json({
+      success: true,
+      userDetails: req.loggedInUser,
+    });    
+  } catch (error) {
+    res.status(500).json(error.message)
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  if (!decoded) {
-    return next(new CustomError("Invalid token", 404));
-  }
-  const userDetails = await users.findById(decoded._id).select("-password");
-  if (!userDetails) {
-    return next(new CustomError("No user found", 404));
-  }
-  res.status(200).json({
-    success: true,
-    userDetails,
-  });
 });
 
 //Exporting all the functions

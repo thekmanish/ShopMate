@@ -14,7 +14,7 @@ router
   .post(authUser)
   .put(protect, updateProfile)
   .delete(protect, deleteAccount)
-  .get(checkAuth);
+  .get(protect, checkAuth);
 router.post("/signup", register);
 router.get("/logout", logout);
 export default router;
