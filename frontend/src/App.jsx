@@ -17,11 +17,9 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-
-      {/* Main Content - Ensures Space for Footer */}
+      
       <main className="flex-grow pb-16">
         {" "}
-        {/* 👈 Ensures content is not hidden by the footer */}
         <Outlet />
       </main>
 

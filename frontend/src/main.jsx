@@ -12,15 +12,19 @@ import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
 import Login from "./pages/Login.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import PublicRoutes from "./components/routes/PublicRoutes.jsx";
 import { Toaster } from "react-hot-toast";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Home />} />
       <Route path="cart" element={<Cart />} />
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<PublicRoutes><Login /></PublicRoutes>} />
       <Route path="product/:individualProductId" element={<ProductDetails />} />
+      <Route path="/signup" element={<PublicRoutes><SignUp /></PublicRoutes>}/>
       <Route
         path="*"
         element={<h1 className=" ">this route does not exist</h1>}

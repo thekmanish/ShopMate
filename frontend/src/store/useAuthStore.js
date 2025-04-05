@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 
 const useAuthStore = create((set) => ({
   user: null,
+  signedUpUser: null,
   token: localStorage.getItem("token") || null,
   loading: false,
   error: null,
@@ -13,16 +14,13 @@ const useAuthStore = create((set) => ({
     try {
       const response = await api.post("/users", { email, password });
       toast.success("Logged in successfully !!");
-
       const { user, token } = response.data;
-
+      
       localStorage.setItem("token", token);
-
       api.defaults.headers.Authorization = `Bearer ${token}`;
-
       set({ user, token, loading: false });
-
       return true;
+
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
       set({
@@ -54,7 +52,6 @@ const useAuthStore = create((set) => ({
     try {
       const res = await api.get("/users");
       set({ user: res.data.userDetails });
-      console.log(res);
     } catch (error) {
       set({ user: null })
       console.log("Authentication failed, logging out!");
@@ -62,6 +59,18 @@ const useAuthStore = create((set) => ({
       set({loading: false});
     }
   },
+
+  signup: async () => {
+    set({loading: true});
+    try {
+      const res = await api.post("/users/signup", {name, email, password});
+      toast.success("User created successfully")
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      set({loading: false})
+    }
+  }
 }));
 
 export default useAuthStore;

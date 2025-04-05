@@ -1,7 +1,16 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import useAuthStore from "../store/useAuthStore"
 
 const SignUp = () => {
-  return <div>SignUp</div>;
-};
+  
+  const {user, signedUpUser} = useAuthStore();
+  const navigate = useNavigate();
+  useEffect (() => {
+    if(user) navigate("/")
+  }, [])
+  return (<h1>This is signup page</h1>)
+}
 
 export default SignUp;
+
