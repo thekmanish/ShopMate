@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 
 const useAuthStore = create((set) => ({
   user: null,
-  signedUpUser: null,
   token: localStorage.getItem("token") || null,
   loading: false,
   error: null,
@@ -60,13 +59,16 @@ const useAuthStore = create((set) => ({
     }
   },
 
-  signup: async () => {
+  signup: async (name, email, password) => {
     set({loading: true});
     try {
       const res = await api.post("/users/signup", {name, email, password});
-      toast.success("User created successfully")
+      toast.success("User created successfully");
+      return true;
     } catch (error) {
+      set({error: error.response?.data?.message || error.message});
       toast.error(error.message);
+      return false;
     } finally {
       set({loading: false})
     }

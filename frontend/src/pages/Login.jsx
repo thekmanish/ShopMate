@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, login, loading, error } = useAuthStore();
+  const { user, login, loading } = useAuthStore();
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    
-    if (user) navigate("/");
-  }, [user, navigate]);
+    if (user) {
+        navigate(location.state?.from || "/", { replace: true });
+    }
+}, [user, navigate, location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

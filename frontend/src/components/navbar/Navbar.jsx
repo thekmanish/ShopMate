@@ -48,6 +48,8 @@ export default function Navbar() {
             </span>
           </Link>
 
+          <Link to="/signup" className="relative">Signup</Link>
+
           {user ? (
             <div className="relative">
               <button

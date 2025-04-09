@@ -6,9 +6,9 @@ export default function PublicRoutes ({children}){
     const {user} = useAuthStore();
     const location = useLocation();
 
-    const from = location.state?.from?.pathname || "/";
     if(user) {
         // console.log(from);       
+        const from = location.state?.from?.pathname || "/";
         return <Navigate to={from} replace/>;
     }
 

@@ -14,6 +14,7 @@ import ProductDetails from "./pages/ProductDetails.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import PublicRoutes from "./components/routes/PublicRoutes.jsx";
+import PrivateRoutes from "./components/routes/PrivateRoutes.jsx";
 import { Toaster } from "react-hot-toast";
 
 
@@ -21,7 +22,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Home />} />
-      <Route path="cart" element={<Cart />} />
+      <Route path="cart" element={<PrivateRoutes><Cart /></PrivateRoutes>} />
       <Route path="login" element={<PublicRoutes><Login /></PublicRoutes>} />
       <Route path="product/:individualProductId" element={<ProductDetails />} />
       <Route path="/signup" element={<PublicRoutes><SignUp /></PublicRoutes>}/>
