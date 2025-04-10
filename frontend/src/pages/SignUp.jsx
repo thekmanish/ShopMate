@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import Loader from "../components/Loader";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -10,9 +11,11 @@ export default function SignUp() {
     confirmPassword: ""
   });
   const [errors, setErrors] = useState({});
-  const { user, signup, loading, error } = useAuthStore();
+  const { user, signup, loading } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+
+  if(loading) <Loader />
 
   useEffect(() => {
     if (user) {

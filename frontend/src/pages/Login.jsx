@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation, Navigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
+import Loader from "../components/Loader";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,22 +10,23 @@ export default function Login() {
   const location = useLocation();
   const navigate = useNavigate();
 
+
+  
   useEffect(() => {
     if (user) {
-        navigate(location.state?.from || "/", { replace: true });
+      navigate(location.state?.from || "/", { replace: true });
     }
-}, [user, navigate, location.state]);
-
+  }, [user, navigate, location.state]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(email, password);   
-    if (success) {
-      navigate("/");
-    } else {
+    if (!success){
       console.error("Login failed")
     }
   };
   
+  if (loading) return <Loader />;
   return (
 
     <div className="min-h-screen flex items-center justify-center bg-gray-900">

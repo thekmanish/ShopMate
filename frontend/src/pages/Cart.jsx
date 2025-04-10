@@ -1,5 +1,6 @@
 import React from "react";
 import useCartStore from "../store/useCartStore";
+import { useNavigate } from "react-router-dom";
 import { calculateCartTotal } from "../utils/cartUtils";
 
 const Cart = () => {
@@ -7,6 +8,7 @@ const Cart = () => {
 
   // Calculate Prices
   const { subtotal, taxPrice, shippingPrice, totalPrice } = calculateCartTotal(cart);
+  const navigate = useNavigate();
 
 
   return (
@@ -87,7 +89,7 @@ const Cart = () => {
             </div>
 
             {/* Checkout & Clear Cart Buttons */}
-            <button className="w-full mt-6 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-900 transition-all">
+            <button onClick={() => navigate("/shipping")} className="w-full mt-6 bg-gray-700 text-white py-2 rounded-lg hover:bg-gray-900 transition-all">
               Proceed to Checkout
             </button>
             <button

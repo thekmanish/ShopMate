@@ -53,7 +53,6 @@ const useAuthStore = create((set) => ({
       set({ user: res.data.userDetails });
     } catch (error) {
       set({ user: null })
-      console.log("Authentication failed, logging out!");
     } finally {
       set({loading: false});
     }

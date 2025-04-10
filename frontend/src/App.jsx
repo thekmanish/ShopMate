@@ -7,11 +7,10 @@ import useAuthStore from "./store/useAuthStore.js";
 function App() {
   const { checkAuth, user } = useAuthStore();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     checkAuth();
-    if (user) navigate("/");
   }, []);
 
   return (

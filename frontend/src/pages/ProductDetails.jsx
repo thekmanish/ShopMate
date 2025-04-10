@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Rating from "../components/product/Rating";
 import Loader from "../components/Loader";
+import { Toaster } from "react-hot-toast";
 import Message from "../components/Message";
 import useProductStore from "../store/useProductStore";
 import useCartStore from "../store/useCartStore";
@@ -25,7 +26,7 @@ const ProductDetails = () => {
   }, [individualProductId]);
 
   if (loading) return <Loader />;
-  if (error) return <Message type="error" message={error} />;
+  if (error) return ;
   if (!product)
     return <p className="text-center text-gray-500">Product not found.</p>;
 
