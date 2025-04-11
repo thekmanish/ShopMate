@@ -2,6 +2,7 @@ import React from "react";
 import useCartStore from "../store/useCartStore";
 import { useNavigate } from "react-router-dom";
 import { calculateCartTotal } from "../utils/cartUtils";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 const Cart = () => {
   const { cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCartStore();
@@ -13,7 +14,9 @@ const Cart = () => {
 
   return (
     <div className="container mx-auto p-6">
+    <div className="px-4 md:px-10 py-6">
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Your Shopping Cart 🛒</h1>
+    <CheckoutSteps currentStep={0} />
 
       {cart.length === 0 ? (
         <p className="text-gray-600 text-center">Your cart is empty. Start adding some items!</p>
@@ -66,6 +69,7 @@ const Cart = () => {
               ))}
             </ul>
           </div>
+          
 
           {/* Price Summary Section */}
           <div className="bg-gray-100 p-6 m-4 rounded-lg shadow">
@@ -101,6 +105,7 @@ const Cart = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };
