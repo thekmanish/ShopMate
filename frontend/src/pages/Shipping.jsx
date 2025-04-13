@@ -2,16 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import useCheckoutStore from "../store/useCheckoutStore";
 import CheckoutSteps from '../components/CheckoutSteps';
+import useCartStore from '../store/useCartStore';
 
 const Shipping = () => {
   const { shippingDetails, setShippingDetails } = useCheckoutStore();
   const [formData, setFormData] = useState(shippingDetails);
   const [errors, setErrors] = useState({});
+  const { cart, proceedToShipping, allowShippingAccess } = useCartStore(); 
   const navigate = useNavigate();
 
   useEffect(() => {
+    if(cart.length === 0 || !proceedToShipping){
+      navigate("/cart")
+    }
+    return () => allowShippingAccess(false);
+  }, [cart, proceedToShipping, navigate, allowShippingAccess]);
+
+  useEffect(() => {
     setFormData(shippingDetails);
-  }, [shippingDetails]);
+  },[]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

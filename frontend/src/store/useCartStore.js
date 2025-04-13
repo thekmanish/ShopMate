@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-// Function to load cart from localStorage
 const loadCart = () => {
   try {
     const storedCart = localStorage.getItem("cart");
@@ -14,6 +13,7 @@ const loadCart = () => {
 
 const useCartStore = create((set, get) => ({
   cart: loadCart(), // Load cart on app start
+  proceedToShipping: false,
 
   addToCart: (product) => {
     
@@ -66,6 +66,8 @@ const useCartStore = create((set, get) => ({
     set({ cart: [] });
     localStorage.removeItem("cart"); // Clear cart from localStorage
   },
+
+  allowShippingAccess: (allowed) => set({proceedToShipping: allowed})
 }));
 
 export default useCartStore;
