@@ -31,7 +31,7 @@ const ProductDetails = () => {
     return <p className="text-center text-gray-500">Product not found.</p>;
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6">
+    <div className="max-w-6xl mx-auto pb-16 p-6 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
         <div className="flex justify-center">

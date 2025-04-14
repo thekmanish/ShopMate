@@ -1,12 +1,14 @@
 import React from "react";
 import useCartStore from "../store/useCartStore";
+import useCheckoutStore from "../store/useCheckoutStore";
 import { useNavigate } from "react-router-dom";
 import { calculateCartTotal } from "../utils/cartUtils";
 import CheckoutSteps from "../components/CheckoutSteps";
 
 const Cart = () => {
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, allowShippingAccess } = useCartStore();
-
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCartStore();
+  const { allowShippingAccess } = useCheckoutStore();
+  
   // Calculate Prices
   const { subtotal, taxPrice, shippingPrice, totalPrice } = calculateCartTotal(cart);
   const navigate = useNavigate();

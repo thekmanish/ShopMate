@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import useCartStore from '../store/useCartStore';
 import useCheckoutStore from "../store/useCheckoutStore";
 import CheckoutSteps from '../components/CheckoutSteps';
-import useCartStore from '../store/useCartStore';
+
 
 const Shipping = () => {
-  const { shippingDetails, setShippingDetails } = useCheckoutStore();
+  const { shippingDetails, setShippingDetails, allowPaymentAccess } = useCheckoutStore();
   const [formData, setFormData] = useState(shippingDetails);
   const [errors, setErrors] = useState({});
-  const { cart, proceedToShipping, allowShippingAccess } = useCartStore(); 
+  const { cart } = useCartStore(); 
+  const { proceedToShipping, allowShippingAccess } = useCheckoutStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(cart.length === 0 || !proceedToShipping){
-      navigate("/cart")
+    if (cart.length === 0 || !proceedToShipping) {
+      navigate("/cart");
     }
     return () => allowShippingAccess(false);
   }, [cart, proceedToShipping, navigate, allowShippingAccess]);
 
   useEffect(() => {
     setFormData(shippingDetails);
-  },[]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,18 +51,17 @@ const Shipping = () => {
     e.preventDefault();
     if (!validation()) return;
     setShippingDetails(formData);
+    allowPaymentAccess(true);
     navigate("/payment");
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 px-4 py-8 md:px-10 md:py-10">
-      
-      {/* ✅ Checkout Steps ABOVE the card */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black px-4 py-8 md:px-10 md:py-10">
       <CheckoutSteps currentStep={1} />
 
-      <div className="flex justify-center mt-8">
-        <div className="w-full max-w-2xl bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-10 shadow-xl text-white">
-          <h2 className="text-3xl font-bold mb-8 text-center">Shipping Information</h2>
+      <div className="flex justify-center mt-8 mb-16">
+        <div className="w-full max-w-2xl bg-white bg-opacity-5 backdrop-blur-xl rounded-2xl p-10 shadow-2xl text-white">
+          <h2 className="text-4xl font-bold mb-10 text-center">Shipping Information</h2>
 
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
@@ -72,17 +73,19 @@ const Shipping = () => {
               { label: "Phone", name: "phone" },
             ].map((field) => (
               <div key={field.name} className="col-span-1">
-                <label className="block mb-1 text-sm font-medium">{field.label}</label>
+                <label className="block mb-2 text-sm font-semibold tracking-wide text-gray-200">
+                  {field.label}
+                </label>
                 <input
                   type={field.type || "text"}
                   name={field.name}
                   value={formData[field.name]}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-opacity-20 rounded-lg border border-gray-300 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                   placeholder={field.label}
+                  className="w-full px-4 py-2 rounded-xl border border-gray-500 bg-white bg-opacity-10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-300"
                 />
                 {errors[field.name] && (
-                  <p className="text-red-400 text-sm mt-1">{errors[field.name]}</p>
+                  <p className="text-red-400 text-xs mt-1">{errors[field.name]}</p>
                 )}
               </div>
             ))}
@@ -91,7 +94,7 @@ const Shipping = () => {
               <button
                 type="submit"
                 onClick={handleSubmit}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
+                className="w-full mt-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-3 px-6 rounded-xl transition-all duration-300"
               >
                 Continue to Payment
               </button>
