@@ -13,11 +13,13 @@ const Payment = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if(!proceedToPayment || !shippingDetails.fullName){
-            navigate("/shipping");
+        console.log(proceedToPayment);
+        
+        if (!proceedToPayment || !shippingDetails.fullName) {
+          navigate("/shipping");
         }
-        return () => allowPaymentAccess(false);
-    }, [proceedToPayment, shippingDetails, navigate, allowPaymentAccess]);
+        // return () => allowPaymentAccess(false);
+      }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();

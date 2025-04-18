@@ -29,9 +29,7 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Icons */}
-        <div className="flex items-center space-x-6">
-          {/* Search Bar (Mobile) */}
+        <div className="flex items-center space-x-6"> 
           <div className="md:hidden">
             <input
               type="text"
@@ -40,7 +38,6 @@ export default function Navbar() {
             />
           </div>
 
-          {/* Cart Icon */}
           <Link to="/cart" className="relative">
             <span className="text-xl">🛒</span>
             <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs w-5 h-5 flex items-center justify-center rounded-full">

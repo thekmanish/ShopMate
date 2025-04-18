@@ -17,7 +17,7 @@ const Shipping = () => {
     if (cart.length === 0 || !proceedToShipping) {
       navigate("/cart");
     }
-    return () => allowShippingAccess(false);
+    // return () => allowShippingAccess(false);
   }, [cart, proceedToShipping, navigate, allowShippingAccess]);
 
   useEffect(() => {
@@ -50,6 +50,7 @@ const Shipping = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validation()) return;
+    console.log(formData); 
     setShippingDetails(formData);
     allowPaymentAccess(true);
     navigate("/payment");
