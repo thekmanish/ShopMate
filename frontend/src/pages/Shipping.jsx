@@ -50,7 +50,6 @@ const Shipping = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validation()) return;
-    console.log(formData); 
     setShippingDetails(formData);
     allowPaymentAccess(true);
     navigate("/payment");

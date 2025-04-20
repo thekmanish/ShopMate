@@ -15,6 +15,7 @@ const Cart = () => {
 
   const handleProceed = () => {
     navigate('/shipping');
+    
     allowShippingAccess(true);
   }
 

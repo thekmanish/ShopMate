@@ -12,9 +12,14 @@ const Payment = () => {
     const [selectedMethod, setSelectedMethod] = useState(paymentMethod || "");
     const [error, setError] = useState('');
 
+    const paymentOptions = {
+        "Cash on delivery" : "cash_on_delivery",
+        "Net Banking" : "net_banking",
+        "UPI" : "upi",
+        "Paypal" : "paypal"
+    }
+
     useEffect(() => {
-        console.log(proceedToPayment);
-        
         if (!proceedToPayment || !shippingDetails.fullName) {
           navigate("/shipping");
         }
@@ -27,7 +32,9 @@ const Payment = () => {
             setError("Please select a payment method");
             return;
         }
-        setPaymentMethod(selectedMethod);
+
+        const backendValue = paymentOptions[selectedMethod];
+        setPaymentMethod(backendValue);
         navigate('/summary');
     }
 
@@ -38,7 +45,7 @@ const Payment = () => {
                 <div className="w-full max-w-xl bg-white bg-opacity-5 backdrop-blur-xl rounded-2xl mb-8 p-10 shadow-2xl text-white">
                     <h2 className="text-4xl font-bold mb-10 text-center">Payment method</h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
-                    {['Credit Card','Net Banking', 'Paypal', 'UPI'].map((method) => (
+                    {Object.keys(paymentOptions).map((method) => (
                         <label key={method} className="flex items-center gap-4 bg-white bg-opacity-10 p-3 rounded-xl cursor-pointer transition hover:bg-opacity-20">
                             <input 
                             type="radio"

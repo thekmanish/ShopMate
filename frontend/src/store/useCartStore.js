@@ -31,14 +31,13 @@ const useCartStore = create((set, get) => ({
     }
 
     set({ cart: updatedCart });
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
-    
+    localStorage.setItem("cart", JSON.stringify(updatedCart));    
   },
 
   removeFromCart: (id) => {
     const updatedCart = get().cart.filter((item) => item._id !== id);
     set({ cart: updatedCart });
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   },
 
   increaseQuantity: (id) => {
@@ -47,7 +46,7 @@ const useCartStore = create((set, get) => ({
     );
 
     set({ cart: updatedCart });
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   },
 
   decreaseQuantity: (id) => {
@@ -58,12 +57,12 @@ const useCartStore = create((set, get) => ({
     );
 
     set({ cart: updatedCart });
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   },
 
   clearCart: () => {
     set({ cart: [] });
-    localStorage.removeItem("cart"); // Clear cart from localStorage
+    localStorage.removeItem("cart");
   },
 
 }));
