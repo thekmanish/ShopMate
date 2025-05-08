@@ -17,6 +17,7 @@ import Shipping from "./pages/Shipping.jsx";
 import Payment from "./pages/Payment.jsx"
 import Summary from "./pages/Summary.jsx"
 import OrderDetails from "./pages/OrderDetails.jsx";
+import Profile from "./pages/Profile.jsx";
 import PublicRoutes from "./components/routes/PublicRoutes.jsx";
 import PrivateRoutes from "./components/routes/PrivateRoutes.jsx";
 import { Toaster } from "react-hot-toast";
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
       <Route path="/payment" element={<PrivateRoutes><Payment /></PrivateRoutes>}/>
       <Route path="/summary" element={<PrivateRoutes><Summary /></PrivateRoutes>}/>
       <Route path="/orders/:orderId" element={<PrivateRoutes><OrderDetails /></PrivateRoutes>}/>
+      <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>}/>
       
       <Route
         path="*"

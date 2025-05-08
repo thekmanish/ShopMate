@@ -13,6 +13,7 @@ const Summary = () => {
     const shippingDetails = useCheckoutStore((state) => state.shippingDetails);
     const paymentMethod = useCheckoutStore((state) => state.paymentMethod);
     const user = useAuthStore((state) => state.user);
+    const {resetCheckout} = useCheckoutStore();
 
     const navigate = useNavigate();
 
@@ -52,7 +53,8 @@ const handlePlaceOrder = async () => {
         navigate(`/orders/${orderId}`);
         setTimeout(() => {
           clearCart();
-        }, 500);
+          resetCheckout();
+        }, 200);
 
 
     } catch (error) {

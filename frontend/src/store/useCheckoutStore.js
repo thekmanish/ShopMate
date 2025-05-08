@@ -22,6 +22,14 @@ const useCheckoutStore = create(
 
       proceedToPayment: false,
       allowPaymentAccess: (allowed) => set({ proceedToPayment: allowed }),
+
+      resetCheckout: () => set({
+        shippingDetails: {},
+        proceedToPayment: false,
+        proceedToShipping: false,
+        paymentMethod: ""
+      })
+
     }),
     {
       name: "checkout-storage", // sessionStorage/localStorage me yeh key banegi
