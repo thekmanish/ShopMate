@@ -10,7 +10,7 @@ const Profile = () => {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 p-6">
           <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
             <div className="flex flex-col items-center">
-              <div className="w-24 h-24 rounded-full bg-indigo-500 text-white flex items-center justify-center text-3xl font-bold mb-4">
+              <div className="w-24 h-24 rounded-full bg-gray-700 text-white flex items-center justify-center text-3xl font-bold mb-4">
                 {user?.name?.charAt(0).toUpperCase() || '?'}
               </div>
               <h2 className="text-2xl font-semibold text-gray-800 mb-1">{user?.name || 'Unknown User'}</h2>
@@ -34,7 +34,7 @@ const Profile = () => {
     
             <button
               onClick={() => navigate('/edit-profile')}
-              className="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-xl text-sm font-medium transition duration-200"
+              className="mt-8 w-full bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-xl text-sm font-medium transition duration-200"
             >
               Edit Profile
             </button>

@@ -18,6 +18,8 @@ import Payment from "./pages/Payment.jsx"
 import Summary from "./pages/Summary.jsx"
 import OrderDetails from "./pages/OrderDetails.jsx";
 import Profile from "./pages/Profile.jsx";
+import EditProfile from "./pages/EditProfile.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 import PublicRoutes from "./components/routes/PublicRoutes.jsx";
 import PrivateRoutes from "./components/routes/PrivateRoutes.jsx";
 import { Toaster } from "react-hot-toast";
@@ -37,10 +39,11 @@ const router = createBrowserRouter(
       <Route path="/summary" element={<PrivateRoutes><Summary /></PrivateRoutes>}/>
       <Route path="/orders/:orderId" element={<PrivateRoutes><OrderDetails /></PrivateRoutes>}/>
       <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>}/>
+      <Route path="/edit-profile" element={<PrivateRoutes><EditProfile /></PrivateRoutes>}/>
       
       <Route
         path="*"
-        element={<h1 className=" ">this route does not exist</h1>}
+        element={<NotFoundPage />}
       />
     </Route>
   )

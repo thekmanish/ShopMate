@@ -8,6 +8,8 @@ const useAuthStore = create((set) => ({
   loading: false,
   error: null,
 
+  setUser: (user) => set({user}),
+
   login: async (email, password) => {
     set({ loading: true });
     try {
