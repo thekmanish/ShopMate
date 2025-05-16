@@ -8,6 +8,7 @@ import {
   createProduct,
   deleteProduct,
   deactivateUser,
+  updatePaymentStatus,
 } from "../controller/adminController.js";
 import { adminProtect } from "../middleware/authMiddleware.js";
 import express from "express";
@@ -19,6 +20,7 @@ router
   .get(getAllOrders)
   .put(modifyOrder)
   .delete(deleteOrder);
+router.route("/orders/payment-status", adminProtect).put(updatePaymentStatus)
 
 //PRODUCTS complete
 router

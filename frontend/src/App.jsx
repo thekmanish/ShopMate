@@ -5,7 +5,7 @@ import Footer from "./components/footer/Footer.jsx";
 import useAuthStore from "./store/useAuthStore.js";
 
 function App() {
-  const { checkAuth, user } = useAuthStore();
+  const { checkAuth } = useAuthStore();
 
   // const navigate = useNavigate();
 

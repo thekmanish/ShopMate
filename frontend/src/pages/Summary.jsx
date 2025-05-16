@@ -64,6 +64,7 @@ const handlePlaceOrder = async () => {
 
 return (
     <div className="max-w-4xl mx-auto p-4">
+      <CheckoutSteps currentStep={3}/>
       <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
 
       <div className="mb-4">

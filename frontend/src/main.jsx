@@ -20,9 +20,14 @@ import OrderDetails from "./pages/OrderDetails.jsx";
 import Profile from "./pages/Profile.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import AdminLayout from "./pages/admin/AdminLayout.jsx";
+import Dashboard from "./pages/admin/Dashboard.jsx";
+import AdminOrders from "./pages/admin/AdminOrders.jsx";
 import PublicRoutes from "./components/routes/PublicRoutes.jsx";
+import AdminRoute from "./components/routes/AdminRoute.jsx";
 import PrivateRoutes from "./components/routes/PrivateRoutes.jsx";
 import { Toaster } from "react-hot-toast";
+
 
 
 
@@ -30,7 +35,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Home />} />
-      <Route path="cart" element={<Cart />} />
+      <Route path="/cart" element={<Cart />} />
       <Route path="login" element={<PublicRoutes><Login /></PublicRoutes>} />
       <Route path="product/:individualProductId" element={<ProductDetails />} />
       <Route path="/signup" element={<PublicRoutes><SignUp /></PublicRoutes>}/>
@@ -41,10 +46,14 @@ const router = createBrowserRouter(
       <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>}/>
       <Route path="/edit-profile" element={<PrivateRoutes><EditProfile /></PrivateRoutes>}/>
       
-      <Route
-        path="*"
-        element={<NotFoundPage />}
-      />
+      <Route path="*" element={<NotFoundPage />}/>
+
+      <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+        <Route index element = {<AdminRoute><Dashboard /></AdminRoute>}/>
+        <Route path="orders" element = {<AdminOrders />}/>
+        
+      </Route>
+      
     </Route>
   )
 );

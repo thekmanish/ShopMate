@@ -6,6 +6,10 @@ const Profile = () => {
     const {user} = useAuthStore();
     const navigate = useNavigate();
 
+    const handleEdit = () => {
+      navigate("/edit-profile")
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 p-6">
           <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
@@ -33,7 +37,8 @@ const Profile = () => {
             </div>
     
             <button
-              onClick={() => navigate('/edit-profile')}
+              // onClick={() => navigate('/edit-profile')}
+              onClick={handleEdit}
               className="mt-8 w-full bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-xl text-sm font-medium transition duration-200"
             >
               Edit Profile

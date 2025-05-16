@@ -7,12 +7,13 @@ import users from "../model/userModel.js";
 
 //ORDERS
 const getAllOrders = asyncHandler(async (req, res, next) => {
-  const allOrders = await orders.find({});
+  const allOrders = await orders.find({}).populate("userId", "name");
   if (!allOrders) {
     return next(new customError("No orders found"));
   }
   res.status(200).json(allOrders);
 });
+
 const modifyOrder = asyncHandler(async (req, res, next) => {
   if (!req.body._id) {
     return next(new customError("Request does not contain order id"));
@@ -157,6 +158,36 @@ const deactivateUser = asyncHandler(async (req, res, next) => {
   console.log(deactivateStatus);
 });
 
+// UPDATE PAYMENT STATUS
+const updatePaymentStatus = asyncHandler(async (req, res, next) => {
+  const { _id, status } = req.body;
+
+  if (!_id || !status) {
+    return next(new customError("Order ID or status missing", 400));
+  }
+
+  const validStatuses = ["successful", "failed"];
+  if (!validStatuses.includes(status)) {
+    return next(new customError("Invalid payment status", 400));
+  }
+
+  const updatedOrder = await orders.findByIdAndUpdate(
+    _id,
+    { paymentStatus: status },
+    { new: true }
+  ).populate("userId", "name");
+
+  if (updatedOrder) {
+    res.status(200).json({
+      success: true,
+      updatedOrder,
+    });
+  } else {
+    return next(new customError("Failed to update payment status", 400));
+  }
+});
+
+
 export {
   getAllOrders,
   modifyProduct,
@@ -167,4 +198,5 @@ export {
   deleteProduct,
   createProduct,
   deactivateUser,
+  updatePaymentStatus
 };

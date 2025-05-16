@@ -1,0 +1,69 @@
+import {create} from "zustand";
+import api from "../utils/api.js";
+
+const useOrderStore = create((set) => ({
+    orders: [],
+    loading: false,
+    error: null,
+
+    fetchOrders: async () => {
+        set({loading: true, error: null});
+        try {
+            const { data } = await api.get("/admin/orders");
+            set({orders: data});
+        } catch (err) {
+            set({error: err.message || "Failed to load the orders"})
+            console.error(err.message)
+        } finally {
+            set({loading: false})
+        }
+    },
+
+    updatePaymentStatus: async (_id, status) => {
+    set({loading: true})
+    try {
+
+      const allowedStatuses = ["successful", "failed"];
+      if (!allowedStatuses.includes(status)) {
+        console.error("Invalid status update attempted:", status);
+        return;
+      }
+
+      const { data } = await api.put("/admin/orders/payment-status", {
+        _id,
+        status,
+      });
+
+      set((state) => ({
+        orders: state.orders.map((order) =>
+          order._id === _id ? data.updatedOrder : order
+        ),
+      }));
+    } catch (err) {
+        set({error: err.message || "Payment status update failed !"})
+    } finally {
+        set({loading: false})
+    }
+
+  },
+
+    markAsDelivered : async ( _id ) => {
+        set({loading: true});
+        try {
+            const { data } = await api.put("/admin/orders", {_id});
+            set((state) => ({
+                orders: state.orders.map((order) =>
+            order._id === _id ? data.updatedStatus : order
+            ),
+      }));
+        } catch (err) {
+            set({error: err.message || "Marking as delivered failed"})       
+            console.error(err.message);
+               
+        }
+    }
+
+
+}));
+
+export default useOrderStore;

@@ -56,28 +56,42 @@ export default function Navbar() {
 
             {/* Dropdown - Logged In */}
             {user && (
-              <div className="absolute right-0 mt-3 w-56 bg-white bg-opacity-90 text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 overflow-hidden">
-                <div className="px-5 py-3 border-b border-gray-200 font-medium">
-                  👋 Welcome, <span className="font-bold">{user.name?.split(" ")[0]}</span>
-                </div>
+            <div className="absolute right-0 mt-3 w-56 bg-white bg-opacity-90 text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 overflow-hidden">
+              <div className="px-5 py-3 border-b border-gray-200 font-medium">
+                👋 Welcome, <span className="font-bold">{user.name?.split(" ")[0]}</span>
+              </div>
+
+              <Link
+                onClick={() => setDropDown(false)}
+                to="/profile"
+                className="block px-5 py-3 hover:bg-gray-100 transition"
+              >
+                🛠️ Profile
+              </Link>
+
+              {/* ✅ Admin Link */}
+              {user.isAdmin && (
                 <Link
                   onClick={() => setDropDown(false)}
-                  to="/profile"
-                  className="block px-5 py-3 hover:bg-gray-100 transition"
+                  to="/admin"
+                  className="block px-5 py-3 hover:bg-gray-100 transition font-semibold text-blue-600"
                 >
-                  🛠️ Profile
+                  🛡️ Admin Panel
                 </Link>
-                <button
-                  onClick={() => {
-                    logout();
-                    setDropDown(false);
-                  }}
-                  className="block w-full text-left px-5 py-3 hover:bg-gray-100 transition"
-                >
-                  🚪 Logout
-                </button>
-              </div>
-            )}
+              )}
+
+              <button
+                onClick={() => {
+                  logout();
+                  setDropDown(false);
+                }}
+                className="block w-full text-left px-5 py-3 hover:bg-gray-100 transition"
+              >
+                🚪 Logout
+              </button>
+            </div>
+          )}
+
 
             {/* Dropdown - Logged Out */}
             {!user && (
