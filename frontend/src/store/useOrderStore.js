@@ -55,12 +55,29 @@ const useOrderStore = create((set) => ({
                 orders: state.orders.map((order) =>
             order._id === _id ? data.updatedStatus : order
             ),
-      }));
+            }));
         } catch (err) {
-            set({error: err.message || "Marking as delivered failed"})       
-            console.error(err.message);
-               
+            set({error: err.message || "Marking as delivered failed"});
         }
+    },
+
+    deleteOrder : async ( _id ) => {
+        set({loading: true});
+        try {
+          await api.delete("/admin/orders", {
+            data: { _id }
+          });
+
+          set((state) => ({
+            orders: state.orders.filter((order) => order._id !== _id),
+          }));
+        } catch (err) {
+          set({error: err.message || "Order deletion failed !"});
+          console.error(err.message);        
+        } finally {
+          set({loading: false})
+        }
+
     }
 
 

@@ -37,12 +37,29 @@ const modifyOrder = asyncHandler(async (req, res, next) => {
   }
 });
 
-//ASYNC HANDLER
+//DELETE USER
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const { _id } = req.body;
+  if (!_id) {
+    return next(new customError("User id not found"));
+  }
+  const deleteStatus = await users.findByIdAndDelete(_id);
+
+  if(deleteStatus) {
+    res.status(200).json({success: true});
+  } else {
+    return next(new customError("Unable to delete the user", 400));
+  }
+});
+
+//Delete Order
 const deleteOrder = asyncHandler(async (req, res, next) => {
-  if (!req.body._id) {
+  const { _id } = req.body;
+
+  if (!_id) {
     return next(new customError("Request does not contain order id"));
   }
-  const deleteStatus = await orders.findByIdAndDelete(req.body._id);
+  const deleteStatus = await orders.findByIdAndDelete(_id);
 
   if (deleteStatus) {
     res.status(200).json({ success: true });
@@ -71,6 +88,7 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     pageSize: Math.ceil(totalProductsCount / pageSize),
   });
 });
+
 const createProduct = asyncHandler(async (req, res, next) => {
   console.log("requet received");
   const { image, price, description, category, name, inStock, brand } =
@@ -171,11 +189,9 @@ const updatePaymentStatus = asyncHandler(async (req, res, next) => {
     return next(new customError("Invalid payment status", 400));
   }
 
-  const updatedOrder = await orders.findByIdAndUpdate(
-    _id,
-    { paymentStatus: status },
-    { new: true }
-  ).populate("userId", "name");
+  const updatedOrder = await orders
+    .findByIdAndUpdate(_id, { paymentStatus: status }, { new: true })
+    .populate("userId", "name");
 
   if (updatedOrder) {
     res.status(200).json({
@@ -187,7 +203,6 @@ const updatePaymentStatus = asyncHandler(async (req, res, next) => {
   }
 });
 
-
 export {
   getAllOrders,
   modifyProduct,
@@ -198,5 +213,6 @@ export {
   deleteProduct,
   createProduct,
   deactivateUser,
-  updatePaymentStatus
+  deleteUser,
+  updatePaymentStatus,
 };

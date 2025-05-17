@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import useOrderStore from "../../store/useOrderStore";
+import Loader from "../../components/Loader";
 
 const AdminOrders = () => {
-  const { orders, fetchOrders, updatePaymentStatus, markAsDelivered } = useOrderStore();
+  const { orders, fetchOrders, updatePaymentStatus, markAsDelivered, deleteOrder, loading } = useOrderStore();
 
   useEffect(() => {
     fetchOrders();
@@ -14,6 +15,7 @@ const AdminOrders = () => {
 
   return (
     <div className="p-6">
+      {loading && <Loader/>}
       <h2 className="text-2xl font-bold mb-4">Manage Orders</h2>
       <table className="w-full border">
         <thead>
@@ -24,6 +26,7 @@ const AdminOrders = () => {
             <th className="p-2 border">Payment Status</th>
             <th className="p-2 border">Change Status</th>
             <th className="p-2 border">Mark as delivered</th>
+            <th className="p-2 border">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -33,7 +36,7 @@ const AdminOrders = () => {
                 <td className="p-2 border">{order.userId?.name || "Unknown"}</td>
                 <td className="p-2 border">₹ {order.totalOrderValue}</td>
                 <td className="p-2 border capitalize">{order.paymentStatus}</td>
-                <td className="p-2 border">
+                <td className="p-2 border ">
                     <select
                     defaultValue={order.paymentStatus}
                     onChange={(e) => {
@@ -58,6 +61,15 @@ const AdminOrders = () => {
                         Mark as Delivered
                     </button>
                     )}
+                </td>
+                <td className="p-2 border text-center">
+                  <button
+                        onClick={() => deleteOrder(order._id)}
+                        className="px-2 py-1 text-sm bg-red-500 text-white rounded"
+                    >
+                        Delete
+                    </button>
+
                 </td>
             </tr>
 
