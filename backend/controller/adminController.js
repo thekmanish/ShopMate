@@ -37,20 +37,6 @@ const modifyOrder = asyncHandler(async (req, res, next) => {
   }
 });
 
-//DELETE USER
-const deleteUser = asyncHandler(async (req, res, next) => {
-  const { _id } = req.body;
-  if (!_id) {
-    return next(new customError("User id not found"));
-  }
-  const deleteStatus = await users.findByIdAndDelete(_id);
-
-  if(deleteStatus) {
-    res.status(200).json({success: true});
-  } else {
-    return next(new customError("Unable to delete the user", 400));
-  }
-});
 
 //Delete Order
 const deleteOrder = asyncHandler(async (req, res, next) => {
@@ -60,7 +46,7 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
     return next(new customError("Request does not contain order id"));
   }
   const deleteStatus = await orders.findByIdAndDelete(_id);
-
+  
   if (deleteStatus) {
     res.status(200).json({ success: true });
   } else {
@@ -70,7 +56,7 @@ const deleteOrder = asyncHandler(async (req, res, next) => {
 
 //PRODUCTS
 const getAllProducts = asyncHandler(async (req, res, next) => {
-  console.log(req.query.page);
+
   const pageSize = 2;
   const pageNumber = Number(req.query.page) || 1;
   const totalProductsCount = await products.countDocuments();
@@ -79,21 +65,21 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     .limit(pageSize)
     .skip(pageSize * (pageNumber - 1));
 
-  if (!allProducts) {
-    return next(new CustomError("Please try again later", 404));
-  }
-  res.status(200).json({
-    allProducts,
-    pageNumber,
+    if (!allProducts) {
+      return next(new CustomError("Please try again later", 404));
+    }
+    res.status(200).json({
+      allProducts,
+      pageNumber,
     pageSize: Math.ceil(totalProductsCount / pageSize),
   });
 });
 
 const createProduct = asyncHandler(async (req, res, next) => {
-  console.log("requet received");
+  console.log("request received");
   const { image, price, description, category, name, inStock, brand } =
-    req.body;
-
+  req.body;
+  
   const createProductStatus = await products.create({
     image,
     price,
@@ -130,8 +116,8 @@ const deleteProduct = asyncHandler(async (req, res, next) => {
 //MODIFY PRODUCT
 const modifyProduct = asyncHandler(async (req, res, next) => {
   const { image, price, description, category, name, inStock, brand } =
-    req.body;
-
+  req.body;
+  
   const updatedProductStatus = await products.findByIdAndUpdate(
     req.params.id,
     {
@@ -147,9 +133,7 @@ const modifyProduct = asyncHandler(async (req, res, next) => {
     },
     { new: true, runValidators: true }
   );
-
-  console.log(updatedProductStatus);
-
+  
   if (updatedProductStatus) {
     res.status(200).json(updatedProductStatus);
   } else {
@@ -167,6 +151,22 @@ const getAllUsers = asyncHandler(async (req, res, next) => {
   }
 });
 
+//DELETE USER
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const { _id } = req.body;
+  if (!_id) {
+    return next(new customError("User id not found"));
+  }
+  const deleteStatus = await users.findByIdAndDelete(_id);
+
+  if(deleteStatus) {
+    res.status(200).json({success: true});
+  } else {
+    return next(new customError("Unable to delete the user", 400));
+  }
+});
+
+//DEACTIVATE USER
 const deactivateUser = asyncHandler(async (req, res, next) => {
   const { _id } = req.body;
   if (!_id) {

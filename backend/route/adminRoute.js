@@ -21,7 +21,7 @@ router
   .get(getAllOrders)
   .put(modifyOrder)
   .delete(deleteOrder);
-router.route("/orders/payment-status", adminProtect).put(updatePaymentStatus)
+router.route("/orders/payment-status", adminProtect).put(updatePaymentStatus);
 
 //PRODUCTS complete
 router
@@ -29,8 +29,20 @@ router
   .get(getAllProducts)
   .delete(deleteProduct)
   .post(createProduct);
-router.route("/products/:id", adminProtect).put(modifyProduct);
+
+router.route("/products/:id", adminProtect)
+  .put(modifyProduct);
 
 //USERS MANIPULATION
-router.route("/users", adminProtect).get(getAllUsers).put(deactivateUser).delete(deleteUser);
+router
+  .route("/users", adminProtect)
+  .get(getAllUsers)
+  .put(deactivateUser)
+  .delete(deleteUser);
+
 export default router;
+
+
+
+
+

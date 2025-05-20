@@ -22,8 +22,10 @@ import EditProfile from "./pages/EditProfile.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import AdminLayout from "./pages/admin/AdminLayout.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
-import AdminOrders from "./pages/admin/AdminOrders.jsx";
 import AdminUsers from "./pages/admin/AdminUsers.jsx";
+import AdminProducts from "./pages/admin/AdminProducts.jsx";
+import AdminOrders from "./pages/admin/AdminOrders.jsx";
+import EditProduct from "./pages/admin/EditProduct.jsx"; 
 import PublicRoutes from "./components/routes/PublicRoutes.jsx";
 import AdminRoute from "./components/routes/AdminRoute.jsx";
 import PrivateRoutes from "./components/routes/PrivateRoutes.jsx";
@@ -53,7 +55,8 @@ const router = createBrowserRouter(
         <Route index element = {<AdminRoute><Dashboard /></AdminRoute>}/>
         <Route path="users" element = {<AdminUsers />}/>
         <Route path="orders" element = {<AdminOrders />}/>
-        
+        <Route path="products" element = {<AdminProducts />}/>      
+        <Route path="products/edit/:id" element = {<EditProduct />}/>      
       </Route>
       
     </Route>
