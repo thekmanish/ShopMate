@@ -76,7 +76,6 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
 });
 
 const createProduct = asyncHandler(async (req, res, next) => {
-  console.log("request received");
   const { image, price, description, category, name, inStock, brand } =
   req.body;
   

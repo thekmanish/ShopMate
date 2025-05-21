@@ -34,8 +34,7 @@ const AdminProducts = () => {
   };
 
   const handleCreate = () => {
-    // Navigate to create page or open modal
-    console.log("Create new product");
+    navigate("/admin/product/new");
   };
 
   return (

@@ -26,6 +26,7 @@ import AdminUsers from "./pages/admin/AdminUsers.jsx";
 import AdminProducts from "./pages/admin/AdminProducts.jsx";
 import AdminOrders from "./pages/admin/AdminOrders.jsx";
 import EditProduct from "./pages/admin/EditProduct.jsx"; 
+import CreateProduct from "./pages/admin/CreateProduct.jsx"; 
 import PublicRoutes from "./components/routes/PublicRoutes.jsx";
 import AdminRoute from "./components/routes/AdminRoute.jsx";
 import PrivateRoutes from "./components/routes/PrivateRoutes.jsx";
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
         <Route path="orders" element = {<AdminOrders />}/>
         <Route path="products" element = {<AdminProducts />}/>      
         <Route path="products/edit/:id" element = {<EditProduct />}/>      
+        <Route path="product/new" element = {<CreateProduct />}/>      
       </Route>
       
     </Route>

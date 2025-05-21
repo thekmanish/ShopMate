@@ -61,7 +61,19 @@ const useAdminProductStore = create((set) => ({
     } finally {
         set({loading: false})
     }
-  }
+  },
+
+  createProduct: async (formData) => {
+    set({ loading: true });
+    try {
+      const { data } = await api.post("admin/products", formData);
+      set((state) => ({ products: [...state.products, data] }));
+    } catch (error) {
+      console.error("Error creating product:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));
 
 export default useAdminProductStore;
