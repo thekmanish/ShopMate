@@ -10,6 +10,7 @@ import {
   deactivateUser,
   deleteUser,
   updatePaymentStatus,
+  getAdminStats,
 } from "../controller/adminController.js";
 import { adminProtect } from "../middleware/authMiddleware.js";
 import express from "express";
@@ -39,6 +40,11 @@ router
   .get(getAllUsers)
   .put(deactivateUser)
   .delete(deleteUser);
+
+//STATS
+router
+  .route("/stats", adminProtect)
+  .get(getAdminStats);
 
 export default router;
 

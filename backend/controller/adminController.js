@@ -202,6 +202,16 @@ const updatePaymentStatus = asyncHandler(async (req, res, next) => {
   }
 });
 
+//STATS
+const getAdminStats = asyncHandler(async (req, res) => {
+  const totalOrders = await orders.countDocuments();
+  const totalProducts = await products.countDocuments();
+  const totalUsers = await users.countDocuments();
+  const pendingOrders = await orders.countDocuments({ paymentStatus: "pending" });
+
+  res.json({ totalOrders, totalProducts, totalUsers, pendingOrders });
+});
+
 export {
   getAllOrders,
   modifyProduct,
@@ -214,4 +224,5 @@ export {
   deactivateUser,
   deleteUser,
   updatePaymentStatus,
+  getAdminStats
 };
