@@ -19,6 +19,7 @@ import Summary from "./pages/Summary.jsx"
 import OrderDetails from "./pages/OrderDetails.jsx";
 import Profile from "./pages/Profile.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
+import MyOrders from "./pages/MyOrders.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import AdminLayout from "./pages/admin/AdminLayout.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
@@ -49,6 +50,7 @@ const router = createBrowserRouter(
       <Route path="/orders/:orderId" element={<PrivateRoutes><OrderDetails /></PrivateRoutes>}/>
       <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>}/>
       <Route path="/edit-profile" element={<PrivateRoutes><EditProfile /></PrivateRoutes>}/>
+      <Route path="/my-orders" element={<PrivateRoutes><MyOrders /></PrivateRoutes>}/>
       
       <Route path="*" element={<NotFoundPage />}/>
 

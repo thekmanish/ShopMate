@@ -69,6 +69,13 @@ export default function Navbar() {
                 🛠️ Profile
               </Link>
 
+              <Link
+                to="/my-orders"
+                className="block px-5 py-3 hover:bg-gray-100 transition"
+              >
+                📦 My Orders
+              </Link>
+
               {/* ✅ Admin Link */}
               {user.isAdmin && (
                 <Link
@@ -80,15 +87,14 @@ export default function Navbar() {
                 </Link>
               )}
 
-              <button
-                onClick={() => {
-                  logout();
-                  setDropDown(false);
-                }}
-                className="block w-full text-left px-5 py-3 hover:bg-gray-100 transition"
+              <Link
+                to="/"
+                onClick={() => logout()}
+                className="block px-5 py-3 hover:bg-gray-100 transition"
               >
                 🚪 Logout
-              </button>
+              </Link>
+
             </div>
           )}
 

@@ -1,8 +1,9 @@
 import {create} from "zustand";
-import api from "../utils/api.js";
+import api from "../utils/api";
 
 const useOrderStore = create((set) => ({
     orders: [],
+    myOrders: [],
     loading: false,
     error: null,
 
@@ -77,8 +78,17 @@ const useOrderStore = create((set) => ({
         } finally {
           set({loading: false})
         }
+    },
 
+    fetchMyOrders: async () => {
+    try {
+      set({ loading: true });
+      const { data } = await api.get('/orders/my-orders');
+      set({ myOrders: data, loading: false });
+    } catch (err) {
+      set({ error: err.response?.data?.message || err.message, loading: false });
     }
+  },
 
 
 }));

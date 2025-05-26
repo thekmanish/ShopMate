@@ -65,18 +65,4 @@ const getOrderById = asyncHandler(async (req, res, next) => {
   }
 });
 
-const modifyPaymentStatus = asyncHandler(async (req, res, next) => {
-  const isSuccessful = await orders.findByIdAndUpdate(req.loggedInUser._id, {
-    paymentStatus: "successful",
-  });
-  if (isSuccessful) {
-    res.status(200).json({
-      success: true,
-    });
-  } else {
-    await orders.findByIdAndUpdate(users._id, { paymentStatus: "failed" });
-    res.status(400).json({ success: false });
-  }
-});
-
 export { createOrder, getMyOrder, getOrderById };
