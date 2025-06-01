@@ -76,7 +76,7 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-      <div className="relative bg-gray-800 p-10 mt-2 mb-16 rounded-xl shadow-2xl w-full max-w-md border border-gray-700 overflow-hidden">
+      <div className="relative bg-gray-800 p-10 mt-16 mb-16 rounded-xl shadow-2xl w-full max-w-md border border-gray-700 overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-yellow-400 rounded-full opacity-10"></div>
         <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-purple-500 rounded-full opacity-10"></div>
