@@ -6,14 +6,21 @@ import { calculateCartTotal } from "../utils/cartUtils";
 import CheckoutSteps from "../components/CheckoutSteps";
 
 const Cart = () => {
-  const { cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCartStore();
+  const {
+    cart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+    clearCart,
+  } = useCartStore();
   const { allowShippingAccess } = useCheckoutStore();
 
-  const { subtotal, taxPrice, shippingPrice, totalPrice } = calculateCartTotal(cart);
+  const { subtotal, taxPrice, shippingPrice, totalPrice } =
+    calculateCartTotal(cart);
   const navigate = useNavigate();
 
   const handleProceed = () => {
-    navigate('/shipping');
+    navigate("/shipping");
     allowShippingAccess(true);
   };
 
@@ -27,9 +34,19 @@ const Cart = () => {
         {cart.length === 0 ? "" : <CheckoutSteps currentStep={0} />}
 
         {cart.length === 0 ? (
-          <p className="text-gray-600 text-center">
-            Your cart is empty. Start adding some items!
-          </p>
+          <>
+            <p className="text-gray-600 text-center text-lg mb-4">
+              Your cart is empty. Start adding some items!
+            </p>
+            <div className="flex justify-center">
+              <button
+                onClick={() => navigate("/")}
+                className="bg-gradient-to-r from-gray-600 to-gray-900 text-white px-6 py-2 rounded-full shadow hover:shadow-lg hover:scale-105 transition-all duration-300"
+              >
+                🏠 Go Back Home
+              </button>
+            </div>
+          </>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Cart Items Section */}
@@ -47,8 +64,12 @@ const Cart = () => {
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                       <div>
-                        <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
-                        <p className="text-gray-600">₹{item.price.toFixed(2)}</p>
+                        <h2 className="text-lg font-semibold text-gray-800">
+                          {item.name}
+                        </h2>
+                        <p className="text-gray-600">
+                          ₹{item.price.toFixed(2)}
+                        </p>
                         <div className="flex items-center mt-2 space-x-2">
                           <button
                             onClick={() => decreaseQuantity(item._id)}
@@ -56,7 +77,9 @@ const Cart = () => {
                           >
                             -
                           </button>
-                          <span className="px-4 text-gray-700">{item.quantity}</span>
+                          <span className="px-4 text-gray-700">
+                            {item.quantity}
+                          </span>
                           <button
                             onClick={() => increaseQuantity(item._id)}
                             className="px-3 py-1 bg-gray-300 text-gray-700 rounded-full hover:bg-gray-400 transition-colors duration-200"
@@ -86,21 +109,27 @@ const Cart = () => {
               <div className="space-y-2 text-base text-gray-700">
                 <div className="flex flex-wrap justify-between">
                   <span className="w-1/2">Subtotal:</span>
-                  <span className="w-1/2 text-right">₹{subtotal.toFixed(2)}</span>
+                  <span className="w-1/2 text-right">
+                    ₹{subtotal.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex flex-wrap justify-between">
                   <span className="w-1/2">Shipping:</span>
                   <span className="w-1/2 text-right">
-                    {shippingPrice === 0 ? "Free" : `₹${shippingPrice.toFixed(2)}`}
+                    {shippingPrice === 0
+                      ? "Free"
+                      : `₹${shippingPrice.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex flex-wrap justify-between">
-                  <span className="w-1/2">Tax (10%):</span>
-                  <span className="w-1/2 text-right">₹{taxPrice.toFixed(2)}</span>
+                  <span className="w-1/2">Tax :</span>
+                  <span className="w-1/2 text-right">₹{0}</span>
                 </div>
                 <div className="flex flex-wrap justify-between font-bold text-green-600 text-lg pt-2 border-t mt-2">
                   <span className="w-1/2">Total:</span>
-                  <span className="w-1/2 text-right">₹{totalPrice.toFixed(2)}</span>
+                  <span className="w-1/2 text-right">
+                    ₹{totalPrice.toFixed(2)}
+                  </span>
                 </div>
               </div>
 

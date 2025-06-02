@@ -1,38 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Rating from "./Rating"; // If using Rating component
+import Rating from "./Rating";
 
 const ProductComponent = ({ product }) => {
-
   return (
     <Link
       to={`/product/${product._id}`}
-      className="block hover:scale-110 transition-all duration-500"
+      className="block hover:scale-105 transition-transform duration-300"
     >
-      <div className="border border-gray-300 rounded-lg bg-white shadow-md hover:shadow-lg transition duration-300 max-w-sm mx-auto flex flex-col items-center p-4 w-full cursor-pointer h-[400px]">
+      <div className="border border-gray-200 rounded-xl bg-white shadow-md hover:shadow-xl transition duration-300 p-4 h-[360px] flex flex-col items-center">
         {/* Image Section */}
-        <div className="w-40 h-40 flex justify-center items-center overflow-hidden">
+        <div className="w-full h-40 flex justify-center items-center overflow-hidden">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-contain"
+            className="h-full w-full object-contain"
           />
         </div>
 
-        <div className="text-center mt-4 flex flex-col justify-between h-full w-full">
-          {/* Title */}
-          <h2 className="text-lg font-bold text-gray-900 transition">
+        {/* Content Section */}
+        <div className="mt-4 text-center flex flex-col flex-grow w-full">
+          <h2 className="text-base font-semibold text-gray-800 line-clamp-1">
             {product.name}
           </h2>
+          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+            {product.description}
+          </p>
 
-          <p className="text-gray-600 text-sm">{product.description}</p>
-          <Rating rating={product.ratings} />
-          <p className="text-xl font-semibold text-gray-700 mt-2">
+          <div className="mt-2">
+            <Rating rating={product.ratings} />
+          </div>
+
+          <p className="text-lg font-bold text-gray-700 mt-1">
             ₹{product.price}
           </p>
 
-          {/* View Details Button */}
-          <button className="mt-3 px-5 py-2 bg-gray-700 text-white rounded hover:bg-gray-900 transition">
+          {/* Button */}
+          <button className="mt-auto px-4 py-2 bg-gray-800 text-white text-sm rounded hover:bg-gray-900 transition">
             View Details
           </button>
         </div>

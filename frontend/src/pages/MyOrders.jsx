@@ -24,7 +24,11 @@ const MyOrders = () => {
     fetchMyOrders();
   }, []);
 
-
+  const paymentStatusLabels = {
+    successful: "Successful",
+    failed: "Failed",
+    pending: "Pending"
+  };
   
   return (
       <div className="max-w-4xl mx-auto p-4">
@@ -45,7 +49,7 @@ const MyOrders = () => {
                 className="block border rounded-lg p-4 shadow bg-white hover:bg-gray-100 transition"
             >
                 <p><strong>Order ID:</strong> {order._id}</p>
-                <p><strong>Status:</strong> {order.paymentStatus}</p>
+                <p><strong>Status:</strong> {paymentStatusLabels[order.paymentStatus]}</p>
                 <p><strong>Delivery:</strong> {order.isDelivered ? "✅ Delivered" : "⏳ Pending"}</p>
                 <p><strong>Total Items:</strong> {order.items?.length}</p>
                 <p className="text-blue-600 mt-2 text-sm">Click to view details</p>

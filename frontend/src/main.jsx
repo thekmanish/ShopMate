@@ -21,6 +21,8 @@ import Profile from "./pages/Profile.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
 import MyOrders from "./pages/MyOrders.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import CategoryPage from "./pages/CategoryPage.jsx";
+import SearchPage from "./pages/SearchPage.jsx";
 import AdminLayout from "./pages/admin/AdminLayout.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
 import AdminUsers from "./pages/admin/AdminUsers.jsx";
@@ -51,6 +53,8 @@ const router = createBrowserRouter(
       <Route path="/profile" element={<PrivateRoutes><Profile /></PrivateRoutes>}/>
       <Route path="/edit-profile" element={<PrivateRoutes><EditProfile /></PrivateRoutes>}/>
       <Route path="/my-orders" element={<PrivateRoutes><MyOrders /></PrivateRoutes>}/>
+      <Route path="/category/:categoryName" element={<CategoryPage/>}/>
+      <Route path="/search" element={<SearchPage/>}/>
       
       <Route path="*" element={<NotFoundPage />}/>
 

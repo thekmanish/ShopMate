@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useCartStore from '../store/useCartStore';
+import useCartStore from "../store/useCartStore";
 import useCheckoutStore from "../store/useCheckoutStore";
-import CheckoutSteps from '../components/CheckoutSteps';
-
+import CheckoutSteps from "../components/CheckoutSteps";
+import useBuyNowStore from "../store/useBuyNowStore";
 
 const Shipping = () => {
-  const { shippingDetails, setShippingDetails, allowPaymentAccess } = useCheckoutStore();
+  const { shippingDetails, setShippingDetails, allowPaymentAccess } =
+    useCheckoutStore();
   const [formData, setFormData] = useState(shippingDetails);
   const [errors, setErrors] = useState({});
-  const { cart } = useCartStore(); 
+  const { cart } = useCartStore();
   const { proceedToShipping, allowShippingAccess } = useCheckoutStore();
+  const { buyNowProduct } = useBuyNowStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (cart.length === 0 || !proceedToShipping) {
+    const isCartFlow = cart.length > 0 && proceedToShipping;
+    const isBuyNowFlow = !!buyNowProduct;
+
+    if (!isCartFlow && !isBuyNowFlow) {
       navigate("/cart");
     }
     // return () => allowShippingAccess(false);
@@ -35,7 +40,8 @@ const Shipping = () => {
     if (!formData.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!formData.address.trim()) newErrors.address = "Address is required";
     if (!formData.city.trim()) newErrors.city = "City is required";
-    if (!formData.postalCode.trim()) newErrors.postalCode = "Postal code is required";
+    if (!formData.postalCode.trim())
+      newErrors.postalCode = "Postal code is required";
     if (!formData.country.trim()) newErrors.country = "Country is required";
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
@@ -61,9 +67,14 @@ const Shipping = () => {
 
       <div className="flex justify-center mt-8 mb-16">
         <div className="w-full max-w-2xl bg-white bg-opacity-5 backdrop-blur-xl rounded-2xl p-10 shadow-2xl text-white">
-          <h2 className="text-4xl font-bold mb-10 text-center">Shipping Information</h2>
+          <h2 className="text-4xl font-bold mb-10 text-center">
+            Shipping Information
+          </h2>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
             {[
               { label: "Full Name", name: "fullName" },
               { label: "Address", name: "address" },
@@ -85,7 +96,9 @@ const Shipping = () => {
                   className="w-full px-4 py-2 rounded-xl border border-gray-500 bg-white bg-opacity-10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition duration-300"
                 />
                 {errors[field.name] && (
-                  <p className="text-red-400 text-xs mt-1">{errors[field.name]}</p>
+                  <p className="text-red-400 text-xs mt-1">
+                    {errors[field.name]}
+                  </p>
                 )}
               </div>
             ))}

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import useCartStore from "../store/useCartStore";
 import useCheckoutStore from "../store/useCheckoutStore";
 import useAuthStore from "../store/useAuthStore";
+import useBuyNowStore from "../store/useBuyNowStore";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import api from "../utils/api";
@@ -13,16 +14,30 @@ const Summary = () => {
   const paymentMethod = useCheckoutStore((state) => state.paymentMethod);
   const user = useAuthStore((state) => state.user);
   const { resetCheckout } = useCheckoutStore();
+  const { buyNowProduct, clearBuyNowProduct } = useBuyNowStore();
 
   const navigate = useNavigate();
 
-  const totalAmount = cart.reduce(
+  const orderItems = buyNowProduct ? [buyNowProduct] : cart;
+
+  const paymentMethodLabels = {
+    cash_on_delivery: "Cash on Delivery",
+    upi: "UPI",
+    paypal: "Paypal",
+    net_banking: "Net Banking",
+  };
+
+  const totalAmount = orderItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
 
   useEffect(() => {
-    if (!shippingDetails || !paymentMethod || cart.length === 0) {
+    if (
+      !shippingDetails ||
+      !paymentMethod ||
+      (cart.length === 0 && !buyNowProduct)
+    ) {
       navigate("/cart");
     }
   }, [shippingDetails, paymentMethod, cart, navigate]);
@@ -30,7 +45,7 @@ const Summary = () => {
   const handlePlaceOrder = async () => {
     try {
       const payload = {
-        orderItems: cart.map((item) => ({
+        orderItems: orderItems.map((item) => ({
           _id: item._id,
           name: item.name,
           image: item.image,
@@ -49,9 +64,15 @@ const Summary = () => {
 
       const { data } = await api.post("/orders", payload);
       const orderId = data.orderDetails._id;
+
       navigate(`/orders/${orderId}`);
+
       setTimeout(() => {
-        clearCart();
+        if (buyNowProduct) {
+          clearBuyNowProduct();
+        } else {
+          clearCart();
+        }
         resetCheckout();
       }, 200);
     } catch (error) {
@@ -63,29 +84,37 @@ const Summary = () => {
     <div className="min-h-screen bg-gray-900 text-white px-4 py-8">
       <div className="max-w-4xl mx-auto bg-gray-800 rounded-2xl shadow-2xl p-6">
         <CheckoutSteps currentStep={3} />
-        <h2 className="text-3xl font-bold mb-6 text-center">🧾 Final Order Summary</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center">
+          🧾 Final Order Summary
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="bg-gray-700 rounded-xl p-4">
             <h3 className="text-xl font-semibold mb-2">🚚 Shipping Address</h3>
             <p>{shippingDetails?.address}</p>
-            <p>{shippingDetails?.city}, {shippingDetails?.postalCode}</p>
+            <p>
+              {shippingDetails?.city}, {shippingDetails?.postalCode}
+            </p>
             <p>{shippingDetails?.country}</p>
           </div>
 
           <div className="bg-gray-700 rounded-xl p-4">
             <h3 className="text-xl font-semibold mb-2">💳 Payment Method</h3>
-            <p>{paymentMethod}</p>
+            <p>{paymentMethodLabels[paymentMethod] || paymentMethod}</p>
           </div>
         </div>
 
         <div className="bg-gray-700 rounded-xl p-6 mb-6">
           <h3 className="text-xl font-semibold mb-4">🛍️ Order Items</h3>
           <div className="divide-y divide-gray-600">
-            {cart.map((item) => (
+            {orderItems.map((item) => (
               <div key={item._id} className="flex justify-between py-3">
-                <span>{item.name} × {item.quantity}</span>
-                <span className="font-medium text-green-400">₹{item.price * item.quantity}</span>
+                <span>
+                  {item.name} × {item.quantity}
+                </span>
+                <span className="font-medium text-green-400">
+                  ₹{item.price * item.quantity}
+                </span>
               </div>
             ))}
           </div>

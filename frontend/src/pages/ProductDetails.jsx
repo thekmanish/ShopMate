@@ -4,21 +4,33 @@ import Rating from "../components/product/Rating";
 import Loader from "../components/Loader";
 import { Toaster } from "react-hot-toast";
 import Message from "../components/Message";
+import useAuthStore from "../store/useAuthStore";
 import useProductStore from "../store/useProductStore";
 import useCartStore from "../store/useCartStore";
+import useBuyNowStore from "../store/useBuyNowStore";
 
 const ProductDetails = () => {
   const { product, error, loading, fetchProductById } = useProductStore();
+  const { user } = useAuthStore();
   const { individualProductId } = useParams();
   const { addToCart } = useCartStore();
+  const { setBuyNowProduct } = useBuyNowStore();
   const navigate = useNavigate();
 
-  // State for quantity selection
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = () => {
-    addToCart({ ...product, quantity }); // Pass selected quantity
+    addToCart({ ...product, quantity });
     navigate("/cart");
+  };
+
+  const handleBuyNow = () => {
+    if (!user) {
+      navigate("/login");
+    }
+    setBuyNowProduct({ ...product, quantity });
+
+    navigate("/shipping");
   };
 
   useEffect(() => {
@@ -26,19 +38,19 @@ const ProductDetails = () => {
   }, [individualProductId]);
 
   if (loading) return <Loader />;
-  if (error) return ;
+  if (error) return <Message type="error" message={error} />;
   if (!product)
     return <p className="text-center text-gray-500">Product not found.</p>;
 
   return (
-    <div className="max-w-6xl mx-auto pb-16 p-6 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6">
+    <div className="max-w-6xl mx-auto p-6 pt-8 pb-10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] rounded-lg mt-6 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Image */}
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full max-w-md h-96 object-cover rounded-lg shadow-md"
+            className="w-full max-w-md h-96 object-contain rounded-lg shadow-md"
           />
         </div>
 
@@ -113,6 +125,7 @@ const ProductDetails = () => {
               Add to Cart
             </button>
             <button
+              onClick={handleBuyNow}
               className={`px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-900 transition ${
                 product.inStock > 0 ? "" : "cursor-not-allowed opacity-50"
               }`}
