@@ -51,174 +51,165 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-gray-800 text-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
-        {/* Top Row */}
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link
-              to="/"
-              className="text-2xl font-extrabold px-3 py-1 rounded-lg border border-transparent hover:border-purple-500 transition-all duration-300"
-            >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
-                Shopmate
-              </span>
-            </Link>
-          </div>
+    <nav className="bg-gray-700 text-white shadow-md relative z-50">
+      <div className="container mx-auto flex items-center justify-between md:justify-start px-4 py-3 space-x-4 relative">
+        {/* Logo: desktop left, mobile center */}
+        <Link
+          to="/"
+          className="text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all
+                   md:mr-auto z-10"
+        >
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+            Shopmate
+          </span>
+        </Link>
 
-          {/* Desktop Search */}
-          <div className="hidden md:flex flex-1 justify-center mx-4">
-            <div className="relative w-full max-w-lg">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Search for products..."
-                className="w-full px-5 py-2 rounded-full text-black border focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-              <button
-                onClick={handleSearch}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-black px-3 py-1 rounded-full hover:bg-gray-200"
-              >
-                🔍
-              </button>
-            </div>
-          </div>
-
-          {/* Icons */}
-          <div className="flex items-center space-x-4">
-            {/* Mobile Search Icon */}
-            <button
-              onClick={() => setShowMobileSearch(!showMobileSearch)}
-              className="md:hidden text-xl hover:text-yellow-300 transition"
-            >
-              🔍
-            </button>
-
-            {/* Cart */}
-            <Link
-              to="/cart"
-              className="relative text-2xl hover:text-yellow-300 transition"
-            >
-              🛒
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-
-            {/* User Dropdown */}
-            <div className="relative" ref={userDropdownRef}>
-              <button
-                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                className="flex items-center"
-              >
-                {user ? (
-                  <span className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-semibold uppercase">
-                    {user.name.charAt(0)}
-                  </span>
-                ) : (
-                  <FaRegUser className="text-2xl hover:text-yellow-300 transition" />
-                )}
-              </button>
-              {isUserDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 text-black">
-                  {user ? (
-                    <>
-                      <Link
-                        to="/profile"
-                        onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        Profile
-                      </Link>
-                      <button
-                        onClick={() => {
-                          logout();
-                          setIsUserDropdownOpen(false);
-                        }}
-                        className="w-full text-left block px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        Sign out
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/login"
-                        onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        to="/register"
-                        onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        Register
-                      </Link>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-2xl hover:text-yellow-300 transition"
-            >
-              {isMobileMenuOpen ? "✖" : "☰"}
-            </button>
-          </div>
+        {/* Left: Mobile Search Toggle */}
+        <div className="md:hidden">
+          <button onClick={() => setShowMobileSearch(!showMobileSearch)}>
+            🔍
+          </button>
         </div>
 
-        {/* Mobile Search */}
-        {showMobileSearch && (
-          <div className="md:hidden mt-3">
-            <div className="relative">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Search products..."
-                className="w-full px-4 py-2 rounded-full border text-black focus:outline-none"
-              />
-              <button
-                onClick={handleSearch}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded-full"
-              >
-                🔍
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Desktop Search */}
+        <div className="hidden md:flex items-center flex-1 justify-center z-0">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            placeholder="Search for products..."
+            className="w-full max-w-md border rounded-full px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          />
+          <button
+            onClick={handleSearch}
+            className="ml-2 bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200"
+          >
+            🔍
+          </button>
+        </div>
 
-        {/* Mobile Menu Links */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-gray-700 mt-3 rounded-md px-4 py-3 space-y-2">
-            <Link
-              to="/"
-              onClick={closeMenus}
-              className="block text-white hover:bg-gray-600 px-3 py-2 rounded"
+        {/* Right: Cart, User, Hamburger */}
+        <div className="flex items-center space-x-4">
+          {/* Cart */}
+          <Link to="/cart" className="relative text-xl">
+            🛒
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {totalItems}
+              </span>
+            )}
+          </Link>
+
+          {/* User Icon with Dropdown */}
+          <div className="relative" ref={userDropdownRef}>
+            <button
+              onClick={() => setIsUserDropdownOpen((prev) => !prev)}
+              className="flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700 px-3 py-2 rounded-full hover:shadow-lg transition"
             >
-              Home
-            </Link>
-            <Link
-              to="/contact"
-              onClick={closeMenus}
-              className="block text-white hover:bg-gray-600 px-3 py-2 rounded"
-            >
-              Contact
-            </Link>
+              <FaRegUser className="text-white text-xl" />
+            </button>
+
+            {isUserDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                {user ? (
+                  <>
+                    <div className="px-5 py-3 border-b font-medium">
+                      👋 Welcome,{" "}
+                      <span className="font-bold">
+                        {user.name?.split(" ")[0]}
+                      </span>
+                    </div>
+                    <Link
+                      to="/profile"
+                      onClick={closeMenus}
+                      className="block px-5 py-3 hover:bg-gray-100"
+                    >
+                      🛠️ Profile
+                    </Link>
+                    <Link
+                      to="/my-orders"
+                      onClick={closeMenus}
+                      className="block px-5 py-3 hover:bg-gray-100"
+                    >
+                      📦 My Orders
+                    </Link>
+                    {user.isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={closeMenus}
+                        className="block px-5 py-3 hover:bg-gray-100 font-semibold text-blue-600"
+                      >
+                        🛡️ Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        logout();
+                        closeMenus();
+                      }}
+                      className="w-full text-left px-5 py-3 hover:bg-gray-100"
+                    >
+                      🚪 Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={closeMenus}
+                      className="block px-5 py-3 hover:bg-gray-100"
+                    >
+                      🔐 Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={closeMenus}
+                      className="block px-5 py-3 hover:bg-gray-100"
+                    >
+                      ✍️ Signup
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Hamburger */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-xl"
+          >
+            {isMobileMenuOpen ? "✖" : "☰"}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Search Input */}
+      {showMobileSearch && (
+        <div className="md:hidden px-4 pb-2 bg-gray-700">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            placeholder="Search products..."
+            className="w-full px-4 py-2 rounded border text-black"
+          />
+        </div>
+      )}
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-gray-700 text-white px-4 pb-4 space-y-2">
+          <Link to="/" onClick={closeMenus} className="block">
+            Home
+          </Link>
+          <Link to="/contact" onClick={closeMenus} className="block">
+            Contact
+          </Link>
+        </div>
+      )}
     </nav>
   );
 }
