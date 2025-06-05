@@ -12,7 +12,19 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  // Reusable section render function
+  const categories = [
+    "Electronics",
+    "Men",
+    "Women",
+    "Grocery",
+    "Furniture",
+    "Kids",
+  ];
+
+  const latest = categories
+    .map((cat) => products.find((prod) => prod.category === cat))
+    .filter(Boolean);
+
   const renderSection = (title, filteredProducts, categoryLink) => (
     <div className="mb-12">
       <div className="flex justify-between items-center mb-4">
@@ -27,7 +39,7 @@ const Home = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
           <ProductComponent key={product._id} product={product} />
         ))}
@@ -38,35 +50,29 @@ const Home = () => {
   if (loading) return <Loader />;
   if (error) return <Message type="error" message={error} />;
 
-  const categories = ["Electronics", "Men", "Women", "Grocery", "Furniture", "Kids"];
-
-  // Latest product from each category
-  const latest = categories
-    .map((cat) => products.find((prod) => prod.category === cat))
-    .filter(Boolean);
-
   return (
     <div className="container mx-auto pb-16 p-4">
-      
+      {/* Scrollable Category Buttons on Mobile */}
       <div className="overflow-x-auto mb-6">
-      <div className="flex justify-center flex-wrap gap-4">
-        {categories.map((category) => (
-          <Link
-            to={`/category/${category.toLowerCase()}`}
-            key={category}
-            className="whitespace-nowrap px-4 py-2 bg-gray-700 text-gray-100 rounded-full hover:bg-gray-900 hover:text-white transition"
-          >
-            {category}
-          </Link>
-        ))}
+        <div className="flex justify-center sm:justify-center flex-nowrap sm:flex-wrap gap-4 scrollbar-hide">
+          {categories.map((category) => (
+            <Link
+              to={`/category/${category.toLowerCase()}`}
+              key={category}
+              className="whitespace-nowrap px-4 py-2 bg-gray-700 text-gray-100 rounded-full hover:bg-gray-900 hover:text-white transition"
+            >
+              {category}
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
 
       {renderSection("Latest Products", latest, null)}
 
-      {/* Category-wise */}
       {categories.map((category) => {
-        const categoryProducts = products.filter((prod) => prod.category === category);
+        const categoryProducts = products.filter(
+          (prod) => prod.category === category
+        );
         return renderSection(category, categoryProducts.slice(0, 4), category);
       })}
     </div>
