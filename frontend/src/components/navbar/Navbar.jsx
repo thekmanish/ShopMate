@@ -47,10 +47,12 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-700 text-white shadow-md relative z-50">
-      <div className="container mx-auto flex items-center justify-between px-4 py-3">
+      <div className="container mx-auto flex items-center justify-between md:justify-start px-4 py-3 space-x-4">
         {/* Left: Mobile Search Toggle */}
         <div className="md:hidden">
-          <button onClick={() => setShowMobileSearch(!showMobileSearch)}>🔍</button>
+          <button onClick={() => setShowMobileSearch(!showMobileSearch)}>
+            🔍
+          </button>
         </div>
 
         {/* Desktop Search */}
@@ -74,7 +76,8 @@ export default function Navbar() {
         {/* Center: Logo */}
         <Link
           to="/"
-          className="absolute left-1/2 transform -translate-x-1/2 text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all"
+          className="text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all
+             md:static absolute left-1/2 transform -translate-x-1/2 md:transform-none md:mr-auto"
         >
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
             Shopmate
