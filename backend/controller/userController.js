@@ -65,7 +65,7 @@ const register = asyncHandler(async (req, res, next) => {
 const logout = asyncHandler((req, res, next) => {
   res.cookie("token", "", {
     httpOnly: true,
-    secure: process.env.NODE_ENVIRONMENT === "production",
+    secure: process.env.NODE_ENV === "production",
     maxAge: 15 * 24 * 60 * 60 * 1000,
     sameSite: "none",
   });
