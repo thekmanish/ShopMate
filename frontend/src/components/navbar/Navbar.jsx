@@ -2,7 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useCartStore from "../../store/useCartStore";
 import { calculateCartTotal } from "../../utils/cartUtils";
-import { FaRegUser, FaSearch, FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaRegUser,
+  FaSearch,
+  FaShoppingCart,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import useAuthStore from "../../store/useAuthStore";
 
 export default function Navbar() {
@@ -45,58 +51,60 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-gray-700 text-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        {/* Main Navbar Row */}
-        <div className="flex items-center justify-between h-16">
-          {/* Logo - Left side */}
+    <nav className="bg-gray-800 text-white shadow-lg sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-3">
+        {/* Top Row */}
+        <div className="flex items-center justify-between">
+          {/* Logo */}
           <div className="flex-shrink-0">
             <Link
               to="/"
-              className="text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg hover:border-purple-500 transition-all flex items-center"
+              className="text-2xl font-extrabold px-3 py-1 rounded-lg border border-transparent hover:border-purple-500 transition-all duration-300"
             >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-                Shop<span className="text-yellow-300">mate</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+                Shopmate
               </span>
-              <span className="ml-2 text-yellow-300">🔑</span>
             </Link>
           </div>
 
-          {/* Desktop Search - Centered */}
-          <div className="hidden md:flex flex-1 max-w-xl mx-6">
-            <div className="relative w-full">
+          {/* Desktop Search */}
+          <div className="hidden md:flex flex-1 justify-center mx-4">
+            <div className="relative w-full max-w-lg">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Search for products..."
-                className="w-full border-0 rounded-full px-5 py-2 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-md"
+                className="w-full px-5 py-2 rounded-full text-black border focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               <button
                 onClick={handleSearch}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-purple-600 transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-black px-3 py-1 rounded-full hover:bg-gray-200"
               >
-                <FaSearch className="w-5 h-5" />
+                🔍
               </button>
             </div>
           </div>
 
-          {/* Right Side Icons */}
-          <div className="flex items-center space-x-6">
-            {/* Mobile Search Toggle */}
-            <button 
-              onClick={() => setShowMobileSearch(!showMobileSearch)} 
-              className="md:hidden text-xl hover:text-yellow-300 transition-colors"
+          {/* Icons */}
+          <div className="flex items-center space-x-4">
+            {/* Mobile Search Icon */}
+            <button
+              onClick={() => setShowMobileSearch(!showMobileSearch)}
+              className="md:hidden text-xl hover:text-yellow-300 transition"
             >
-              <FaSearch className="w-5 h-5" />
+              🔍
             </button>
 
             {/* Cart */}
-            <Link to="/cart" className="relative hover:text-yellow-300 transition-colors">
-              <FaShoppingCart className="w-6 h-6" />
+            <Link
+              to="/cart"
+              className="relative text-2xl hover:text-yellow-300 transition"
+            >
+              🛒
               {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs w-5 h-5 flex items-center justify-center rounded-full">
                   {totalItems}
                 </span>
               )}
@@ -106,35 +114,35 @@ export default function Navbar() {
             <div className="relative" ref={userDropdownRef}>
               <button
                 onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                className="flex items-center text-sm rounded-full focus:outline-none hover:text-yellow-300 transition-colors"
+                className="flex items-center"
               >
                 {user ? (
-                  <span className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold border-2 border-yellow-300">
-                    {user.name.charAt(0).toUpperCase()}
+                  <span className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-semibold uppercase">
+                    {user.name.charAt(0)}
                   </span>
                 ) : (
-                  <FaRegUser className="w-6 h-6" />
+                  <FaRegUser className="text-2xl hover:text-yellow-300 transition" />
                 )}
               </button>
               {isUserDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl py-1 z-50 border border-gray-200">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 text-black">
                   {user ? (
                     <>
                       <Link
                         to="/profile"
                         onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors flex items-center"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
-                        <span className="mr-2">👤</span> Profile
+                        Profile
                       </Link>
                       <button
                         onClick={() => {
                           logout();
                           setIsUserDropdownOpen(false);
                         }}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors flex items-center"
+                        className="w-full text-left block px-4 py-2 text-sm hover:bg-gray-100"
                       >
-                        <span className="mr-2">🚪</span> Sign out
+                        Sign out
                       </button>
                     </>
                   ) : (
@@ -142,16 +150,16 @@ export default function Navbar() {
                       <Link
                         to="/login"
                         onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors flex items-center"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
-                        <span className="mr-2">🔑</span> Login
+                        Login
                       </Link>
                       <Link
                         to="/register"
                         onClick={() => setIsUserDropdownOpen(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors flex items-center"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
                       >
-                        <span className="mr-2">✨</span> Register
+                        Register
                       </Link>
                     </>
                   )}
@@ -162,20 +170,16 @@ export default function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-xl hover:text-yellow-300 transition-colors"
+              className="md:hidden text-2xl hover:text-yellow-300 transition"
             >
-              {isMobileMenuOpen ? (
-                <FaTimes className="w-6 h-6" />
-              ) : (
-                <FaBars className="w-6 h-6" />
-              )}
+              {isMobileMenuOpen ? "✖" : "☰"}
             </button>
           </div>
         </div>
 
         {/* Mobile Search */}
         {showMobileSearch && (
-          <div className="md:hidden pb-3">
+          <div className="md:hidden mt-3">
             <div className="relative">
               <input
                 type="text"
@@ -183,34 +187,34 @@ export default function Navbar() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Search products..."
-                className="w-full px-5 py-2 rounded-full border-0 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-md"
+                className="w-full px-4 py-2 rounded-full border text-black focus:outline-none"
               />
               <button
                 onClick={handleSearch}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-purple-600 transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded-full"
               >
-                <FaSearch className="w-5 h-5" />
+                🔍
               </button>
             </div>
           </div>
         )}
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu Links */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-gray-600 px-4 py-3 space-y-3 rounded-b-lg shadow-inner">
-            <Link 
-              to="/" 
-              onClick={closeMenus} 
-              className="block py-2 px-3 hover:bg-gray-500 rounded-lg transition-colors flex items-center"
+          <div className="md:hidden bg-gray-700 mt-3 rounded-md px-4 py-3 space-y-2">
+            <Link
+              to="/"
+              onClick={closeMenus}
+              className="block text-white hover:bg-gray-600 px-3 py-2 rounded"
             >
-              <span className="mr-2">🏠</span> Home
+              Home
             </Link>
-            <Link 
-              to="/contact" 
-              onClick={closeMenus} 
-              className="block py-2 px-3 hover:bg-gray-500 rounded-lg transition-colors flex items-center"
+            <Link
+              to="/contact"
+              onClick={closeMenus}
+              className="block text-white hover:bg-gray-600 px-3 py-2 rounded"
             >
-              <span className="mr-2">📞</span> Contact
+              Contact
             </Link>
           </div>
         )}
