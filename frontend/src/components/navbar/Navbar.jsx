@@ -47,7 +47,18 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-700 text-white shadow-md relative z-50">
-      <div className="container mx-auto flex items-center justify-between md:justify-start px-4 py-3 space-x-4">
+      <div className="container mx-auto flex items-center justify-between md:justify-start px-4 py-3 space-x-4 relative">
+        {/* Logo: desktop left, mobile center */}
+        <Link
+          to="/"
+          className="text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all
+                   absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:mr-auto z-10"
+        >
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+            Shopmate
+          </span>
+        </Link>
+
         {/* Left: Mobile Search Toggle */}
         <div className="md:hidden">
           <button onClick={() => setShowMobileSearch(!showMobileSearch)}>
@@ -56,7 +67,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Search */}
-        <div className="hidden md:flex items-center flex-1 justify-center">
+        <div className="hidden md:flex items-center flex-1 justify-center z-0">
           <input
             type="text"
             value={searchTerm}
@@ -72,17 +83,6 @@ export default function Navbar() {
             🔍
           </button>
         </div>
-
-        {/* Center: Logo */}
-        <Link
-          to="/"
-          className="text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all
-             md:static absolute left-1/2 transform -translate-x-1/2 md:transform-none md:mr-auto"
-        >
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-            Shopmate
-          </span>
-        </Link>
 
         {/* Right: Cart, User, Hamburger */}
         <div className="flex items-center space-x-4">
