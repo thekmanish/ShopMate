@@ -23,6 +23,11 @@ app.use(cors(corsOptions));
 connectDB();
 
 //Routes
+
+app.get("/", (req, res) => {
+  res.send("API is running fine on Vercel 🎉");
+});
+
 app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
