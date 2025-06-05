@@ -16,15 +16,15 @@ export default function Navbar() {
   const handleSearch = () => {
     if (searchTerm.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
-      setSearchTerm(""); // optional: clear input after search
-      setIsOpen(false); // optional: close mobile menu after search
+      setSearchTerm("");
+      setIsOpen(false);
     }
   };
 
   return (
     <nav className="bg-gray-700 shadow-md text-white">
       <div className="container mx-auto flex items-center justify-between px-4 py-4 relative">
-        {/* Logo */}
+    
         <Link
           to="/"
           className="text-2xl font-bold whitespace-nowrap z-10 relative group"
