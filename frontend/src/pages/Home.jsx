@@ -54,7 +54,7 @@ const Home = () => {
     <div className="container mx-auto pb-16 p-4">
       {/* Scrollable Category Buttons on Mobile */}
       <div className="overflow-x-auto mb-6">
-        <div className="flex justify-center sm:justify-center flex-nowrap sm:flex-wrap gap-4 scrollbar-hide">
+        <div className="flex justify-start sm:justify-center flex-nowrap sm:flex-wrap gap-4 scrollbar-hide">
           {categories.map((category) => (
             <Link
               to={`/category/${category.toLowerCase()}`}
