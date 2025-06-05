@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useCartStore from "../../store/useCartStore";
 import { calculateCartTotal } from "../../utils/cartUtils";
@@ -8,10 +8,13 @@ import useAuthStore from "../../store/useAuthStore";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const { cart } = useCartStore();
   const { totalItems } = calculateCartTotal(cart);
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+
+  const userDropdownRef = useRef(null);
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -21,10 +24,38 @@ export default function Navbar() {
     }
   };
 
+  // Close user dropdown if clicked outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target)
+      ) {
+        setIsUserDropdownOpen(false);
+      }
+    }
+    if (isUserDropdownOpen) {
+      window.addEventListener("click", handleClickOutside);
+    } else {
+      window.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [isUserDropdownOpen]);
+
+  // Toggle user dropdown on icon click
+  const toggleUserDropdown = (e) => {
+    e.stopPropagation(); // prevent event bubbling to window
+    setIsUserDropdownOpen((prev) => !prev);
+  };
+
   return (
     <nav className="bg-gray-700 shadow-md text-white">
-      <div className="container mx-auto flex items-center justify-between px-4 py-4 relative">
-    
+      <div className="container mx-auto flex flex-wrap md:flex-nowrap items-center justify-between px-4 py-4 relative">
+
+        {/* Logo */}
         <Link
           to="/"
           className="text-2xl font-bold whitespace-nowrap z-10 relative group"
@@ -54,19 +85,20 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* Mobile Search Bar */}
+        <div className="md:hidden flex-1">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full px-3 py-1 rounded border border-gray-300 focus:outline-none"
+          />
+        </div>
+
         {/* Right Side (User, Cart, Hamburger) */}
-        <div className="flex items-center space-x-4 md:space-x-6 z-10">
-          {/* Mobile Search Bar */}
-          <div className="md:hidden">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="px-3 py-1 rounded border border-gray-300 focus:outline-none"
-            />
-          </div>
+        <div className="flex items-center space-x-4 md:space-x-6 z-10 flex-shrink-0">
 
           {/* Cart */}
           <Link to="/cart" className="relative">
@@ -77,15 +109,18 @@ export default function Navbar() {
           </Link>
 
           {/* User Dropdown */}
-          <div className="relative group">
+          <div className="relative" ref={userDropdownRef}>
             {/* User Icon */}
-            <div className="flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700 px-4 py-2 rounded-full hover:shadow-lg transition cursor-pointer">
+            <div
+              onClick={toggleUserDropdown}
+              className="flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700 px-4 py-2 rounded-full hover:shadow-lg transition cursor-pointer select-none"
+            >
               <FaRegUser className="text-xl text-white" />
             </div>
 
             {/* Dropdown - Logged In */}
-            {user && (
-              <div className="absolute right-0 mt-3 w-56 bg-white bg-opacity-90 text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible pointer-events-auto transition-all duration-300 overflow-hidden">
+            {user && isUserDropdownOpen && (
+              <div className="absolute right-0 mt-3 w-56 bg-white bg-opacity-90 text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 overflow-hidden">
                 <div className="px-5 py-3 border-b border-gray-200 font-medium">
                   👋 Welcome,{" "}
                   <span className="font-bold">{user.name?.split(" ")[0]}</span>
@@ -94,6 +129,7 @@ export default function Navbar() {
                 <Link
                   to="/profile"
                   className="block px-5 py-3 hover:bg-gray-100 transition"
+                  onClick={() => setIsUserDropdownOpen(false)}
                 >
                   🛠️ Profile
                 </Link>
@@ -101,6 +137,7 @@ export default function Navbar() {
                 <Link
                   to="/my-orders"
                   className="block px-5 py-3 hover:bg-gray-100 transition"
+                  onClick={() => setIsUserDropdownOpen(false)}
                 >
                   📦 My Orders
                 </Link>
@@ -109,13 +146,17 @@ export default function Navbar() {
                   <Link
                     to="/admin"
                     className="block px-5 py-3 hover:bg-gray-100 transition font-semibold text-blue-600"
+                    onClick={() => setIsUserDropdownOpen(false)}
                   >
                     🛡️ Admin Panel
                   </Link>
                 )}
 
                 <button
-                  onClick={logout}
+                  onClick={() => {
+                    logout();
+                    setIsUserDropdownOpen(false);
+                  }}
                   className="w-full text-left px-5 py-3 hover:bg-gray-100 transition"
                 >
                   🚪 Logout
@@ -124,17 +165,19 @@ export default function Navbar() {
             )}
 
             {/* Dropdown - Logged Out */}
-            {!user && (
-              <div className="absolute right-0 mt-3 w-44 bg-white bg-opacity-90 text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 opacity-0 group-hover:opacity-100 invisible group-hover:visible pointer-events-auto transition-all duration-300 overflow-hidden">
+            {!user && isUserDropdownOpen && (
+              <div className="absolute right-0 mt-3 w-44 bg-white bg-opacity-90 text-gray-900 border border-gray-300 rounded-2xl shadow-2xl z-50 overflow-hidden">
                 <Link
                   to="/login"
                   className="block px-5 py-3 hover:bg-gray-100 transition"
+                  onClick={() => setIsUserDropdownOpen(false)}
                 >
                   🔐 Login
                 </Link>
                 <Link
                   to="/signup"
                   className="block px-5 py-3 hover:bg-gray-100 transition"
+                  onClick={() => setIsUserDropdownOpen(false)}
                 >
                   ✍️ Signup
                 </Link>
@@ -145,7 +188,7 @@ export default function Navbar() {
           {/* Hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-2xl focus:outline-none"
+            className="md:hidden text-2xl focus:outline-none ml-2"
           >
             {isOpen ? "✖" : "☰"}
           </button>
