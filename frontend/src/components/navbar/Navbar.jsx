@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useCartStore from "../../store/useCartStore";
 import { calculateCartTotal } from "../../utils/cartUtils";
@@ -11,6 +11,7 @@ export default function Navbar() {
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const userDropdownRef = useRef(null);
   const { cart } = useCartStore();
   const { totalItems } = calculateCartTotal(cart);
   const { user, logout } = useAuthStore();
@@ -29,12 +30,43 @@ export default function Navbar() {
     setIsUserDropdownOpen(false);
   };
 
+  // 🧠 Outside click to close user dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(e.target)
+      ) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <nav className="bg-gray-700 shadow-md text-white relative z-50">
-      <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
+    <nav className="bg-gray-700 text-white shadow-md relative z-50">
+      <div className="container mx-auto flex items-center justify-between px-4 py-3">
         {/* Left: Mobile Search Toggle */}
-        <div className="md:hidden flex items-center space-x-3">
-          <button onClick={() => setShowMobileSearch(!showMobileSearch)}>
+        <div className="md:hidden">
+          <button onClick={() => setShowMobileSearch(!showMobileSearch)}>🔍</button>
+        </div>
+
+        {/* Desktop Search */}
+        <div className="hidden md:flex items-center flex-1 justify-center">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            placeholder="Search for products..."
+            className="w-full max-w-md border rounded-full px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
+          />
+          <button
+            onClick={handleSearch}
+            className="ml-2 bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200"
+          >
             🔍
           </button>
         </div>
@@ -42,7 +74,7 @@ export default function Navbar() {
         {/* Center: Logo */}
         <Link
           to="/"
-          className="text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all"
+          className="absolute left-1/2 transform -translate-x-1/2 text-xl md:text-2xl font-bold bg-gray-700 px-3 py-1 rounded-lg shadow-lg border border-gray-700 hover:border-purple-500 transition-all"
         >
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
             Shopmate
@@ -50,7 +82,7 @@ export default function Navbar() {
         </Link>
 
         {/* Right: Cart, User, Hamburger */}
-        <div className="flex items-center space-x-4 md:space-x-6">
+        <div className="flex items-center space-x-4">
           {/* Cart */}
           <Link to="/cart" className="relative text-xl">
             🛒
@@ -61,10 +93,10 @@ export default function Navbar() {
             )}
           </Link>
 
-          {/* User Icon */}
-          <div className="relative">
+          {/* User Icon with Dropdown */}
+          <div className="relative" ref={userDropdownRef}>
             <button
-              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+              onClick={() => setIsUserDropdownOpen((prev) => !prev)}
               className="flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700 px-3 py-2 rounded-full hover:shadow-lg transition"
             >
               <FaRegUser className="text-white text-xl" />
@@ -135,7 +167,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Hamburger Menu */}
+          {/* Hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden text-xl"
@@ -147,7 +179,7 @@ export default function Navbar() {
 
       {/* Mobile Search Input */}
       {showMobileSearch && (
-        <div className="md:hidden px-4 py-2 bg-gray-700">
+        <div className="md:hidden px-4 pb-2 bg-gray-700">
           <input
             type="text"
             value={searchTerm}
@@ -159,35 +191,11 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Desktop Search */}
-      <div className="hidden md:flex justify-center px-4 pb-3">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          placeholder="Search for products..."
-          className="w-full max-w-lg border rounded-full px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-yellow-300"
-        />
-        <button
-          onClick={handleSearch}
-          className="ml-2 bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200"
-        >
-          🔍
-        </button>
-      </div>
-
-      {/* Mobile Menu Links */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-gray-700 text-white px-4 pb-4 space-y-2">
           <Link to="/" onClick={closeMenus} className="block">
             Home
-          </Link>
-          <Link to="/shop" onClick={closeMenus} className="block">
-            Shop
-          </Link>
-          <Link to="/deals" onClick={closeMenus} className="block">
-            Deals
           </Link>
           <Link to="/contact" onClick={closeMenus} className="block">
             Contact
