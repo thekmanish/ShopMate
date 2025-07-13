@@ -206,7 +206,10 @@ export default function Navbar() {
             Home
           </Link>
           <Link to="/contact" onClick={closeMenus} className="block">
-            Contact
+            Contact Us
+          </Link>
+          <Link to="/about" onClick={closeMenus} className="block">
+            About Us
           </Link>
         </div>
       )}
