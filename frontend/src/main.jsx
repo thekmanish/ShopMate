@@ -11,6 +11,7 @@ import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import Cart from "./pages/Cart.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
+import AboutPage from "./pages/AboutUs.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
@@ -45,6 +46,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/contact" element={<ContactUs/>} />
+      <Route path="/about" element={<AboutPage/>} />
 
       <Route path="login" element={<PublicRoutes><Login /></PublicRoutes>} />
       <Route path="product/:individualProductId" element={<ProductDetails />} />
